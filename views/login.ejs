@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="https://a7-sattaking.com/assets/images/favicon.png">
+    <title>AP :: Login</title>
+    <link rel="canonical" href="https://www.wrappixel.com/templates/monsteradmin/" />
+    <!-- Custom CSS -->
+    <link href="https://a7-sattaking.com/dist/css/style.min.css" rel="stylesheet">
+    <meta name="google-signin-client_id"
+        content="1079775296363-i66e9mp8lcnci6ipj64ml696ppev85dk.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Login box.scss -->
+        <!-- ============================================================== -->
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+            style="background:url(https://a7-sattaking.com/assets/images/background/login-register.jpg) no-repeat center center; background-size: cover;">
+            <div class="auth-box on-sidebar p-4 bg-white m-0">
+                <div id="loginform">
+                    <div class="logo text-center">
+                        <span class="db"><img src="https://a7-sattaking.com/assets/images/logo-icon.png"
+                                alt="logo" /><br />
+                            <img src="https://a7-sattaking.com/assets/images/logo-text.png" alt="Home" /></span>
+                    </div>
+                    <!-- Form -->
+                    <div class="row">
+                        <div class="col-12">
+                            <form class="form-horizontal mt-3 form-material" id="loginform" method="post"
+                                action="/login">
+                                <div class="form-group mb-3">
+                                    <div class="col-xs-12">
+                                        <input name="email" class="form-control" type="text"
+                                            placeholder="Username / Email" value="">
+                                    </div>
+                                    <small>
+                                    </small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="col-xs-12">
+                                        <input name="password" class="form-control" type="password"
+                                            placeholder="PIN / Password">
+                                    </div>
+                                    <small>
+                                    </small>
+                                </div>
+                                <div class="form-group">
+                                    <div class="d-flex">
+                                        <div class="checkbox checkbox-info pt-0">
+                                            <input id="checkbox-signup" type="checkbox"
+                                                class="material-inputs chk-col-indigo">
+                                            <label for="checkbox-signup"> Remember me </label>
+                                        </div>
+                                        <div class="ml-auto">
+                                            <a href="javascript:void(0)" id="to-recover" class="text-muted"><i
+                                                    class="fa fa-lock mr-1"></i> Forgot Password?</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center mt-3">
+                                    <div class="col-xs-12">
+                                        <button
+                                            class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light"
+                                            type="submit">Log In</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
+                                        <div class="social mb-3">
+                                            <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip"
+                                                title="Login with Facebook"> <i aria-hidden="true"
+                                                    class="fab fa-facebook-f"></i> </a>
+                                            <a href="javascript:void(0)" class="btn btn-googleplus"
+                                                data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true"
+                                                    class="fab fa-google-plus"></i> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <div class="col-sm-12 justify-content-center d-flex">
+                                        <p>Visit Result Page <a href="/"
+                                                class="text-info font-weight-normal ml-1">lucky-satta7OFFICIAL
+                                                WEBSITE</a></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="recoverform">
+                    <div class="logo">
+                        <h3 class="font-weight-medium mb-3">Recover Password</h3>
+                        <span>Enter your Email and Recover Password instructions will be sent to you!</span>
+                    </div>
+                    <div class="row mt-3">
+                        <!-- Form -->
+                        <form class="col-12 form-material" action="/sendRecoverPasswordLink" method="post">
+                            <!-- email -->
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <input name="email" class="form-control" type="text" value=""
+                                        placeholder="Enter Your Email Address">
+                                    <small>
+                                    </small>
+                                </div>
+                            </div>
+                            <!-- pwd -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <button class="btn btn-block btn-lg btn-primary text-uppercase" type="submit"
+                                        name="action">Reset Password</button>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <a href="javascript:void(0)" id="to-login"
+                                        class="btn btn-block btn-lg btn-secondary text-uppercase">Back to Login</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Login box.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper scss in scafholding.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper scss in scafholding.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- All Required js -->
+    <!-- ============================================================== -->
+    <script src="https://a7-sattaking.com/assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="https://a7-sattaking.com/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="https://a7-sattaking.com/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugin js -->
+    <!-- ============================================================== -->
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".preloader").fadeOut();
+        // ============================================================== 
+        // Login and Recover Password 
+        // ============================================================== 
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $('#to-login').on("click", function () {
+            $("#loginform").fadeIn();
+            $("#recoverform").hide();
+        });
+    </script>
+</body>
+
+</html>
