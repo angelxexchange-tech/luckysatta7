@@ -22,173 +22,37 @@
     <meta property="og:image" content="/7Favicon.png" />
     
     <link rel="icon" type="favicon" href="7Favicon.png" />
-    <link rel="preload" href="https://a7-sattaking.com/designs/multipleColor1/css/55c4d0e8b8c5508b.css" as="style" />
-    <link rel="stylesheet" href="https://a7-sattaking.com/designs/multipleColor1/css/55c4d0e8b8c5508b.css"
-        data-n-g="" />
-    <link rel="preload" href="https://a7-sattaking.com/designs/multipleColor1/css/1aae1bcfa6b95e00.css" as="style" />
-    <link rel="stylesheet" href="https://a7-sattaking.com/designs/multipleColor1/css/1aae1bcfa6b95e00.css"
-        data-n-p="" /><noscript data-n-css=""></noscript>
-    <link rel="preload" href="https://a7-sattaking.com/designs/multipleColor1/css/custom.css" as="style" />
-    <script defer="" nomodule=""
-        src="https://a7-sattaking.com/designs/multipleColor1/chunks/polyfills-c67a75d1b6f99dc8.js"></script>
-    <script defer="" src="https://a7-sattaking.com/designs/multipleColor1/chunks/751.ecd3a919f395e729.js"></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/chunks/webpack-169329c8782f6254.js" defer=""></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/chunks/framework-4556c45dd113b893.js"
-        defer=""></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/chunks/main-96dffd05584c06d5.js" defer=""></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/chunks/pages/_app-f378b6cae1df25ac.js"
-        defer=""></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/chunks/509-8a493ed85a2af663.js" defer=""></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/chunks/pages/index-6a20176f3a4798ba.js"
-        defer=""></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/bcOegbmd4p7Kx93Vf_Fd0/_buildManifest.js"
-        defer=""></script>
-    <script src="https://a7-sattaking.com/designs/multipleColor1/bcOegbmd4p7Kx93Vf_Fd0/_ssgManifest.js"
-        defer=""></script>
-    <style>
-        /* WHITE STRIP */
-        .top_white_strip {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: #fff;
-        }
-
-        /* BUTTON STYLE */
-        .nav_btn {
-            flex: 1;
-            max-width: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 12px 0;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 16px;
-            text-decoration: none;
-            background: linear-gradient(to right, #3b82f6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            border: 2px solid #e5e7eb;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
-        }
-
-        /* MOBILE VIEW */
-        @media (max-width: 640px) {
-            .top_white_strip {
-                gap: 6px;
-            }
-
-            .nav_btn {
-                font-size: 12px;
-                padding: 8px 0;
-                border-radius: 20px;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'blink-glow': 'blinkGlow 1s infinite',
+                        'blink': 'blink 1s infinite',
+                        'blink-black': 'blinkBlack 1s infinite',
+                    },
+                    keyframes: {
+                        blinkGlow: {
+                            '0%, 100%': { opacity: '1', textShadow: '0 0 5px #fff, 0 0 10px #ff4da6, 0 0 20px #3b82f6' },
+                            '50%': { opacity: '0.5', textShadow: 'none' },
+                        },
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.3' },
+                        },
+                        blinkBlack: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.3' },
+                        }
+                    },
+                    fontFamily: {
+                        Roboto: ['Roboto', 'sans-serif'],
+                    }
+                }
             }
         }
-
-        .marquee_strip {
-            background: #fff;
-            padding: 8px 10px;
-            font-weight: 600;
-            font-size: 16px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .marquee_strip marquee {
-            display: block;
-            width: 100%;
-        }
-
-        .nav_btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav_btn.active {
-            background: linear-gradient(to right, #3b82f6, #ec4899);
-            color: #fff;
-            -webkit-text-fill-color: #fff;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-            transform: scale(1.05);
-        }
-
-        .blink_text {
-            font-size: 33px;
-            font-weight: 800;
-            color: #fff;
-            animation: blinkGlow 1s infinite;
-            letter-spacing: 2px;
-        }
-
-        @keyframes blinkGlow {
-            0% {
-                opacity: 1;
-                text-shadow: 0 0 5px #fff, 0 0 10px #ff4da6, 0 0 20px #3b82f6;
-            }
-
-            50% {
-                opacity: 0.5;
-                text-shadow: none;
-            }
-
-            100% {
-                opacity: 1;
-                text-shadow: 0 0 5px #fff, 0 0 10px #ff4da6, 0 0 20px #3b82f6;
-            }
-        }
-
-        @keyframes blink {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.3;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        .blink_black {
-            color: #000;
-            animation: blinkBlack 1s infinite;
-        }
-
-        @keyframes blinkBlack {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.3;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        /* Fix Missing Tailwind Grid Classes */
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        @media (min-width: 768px) {
-            .md\:grid-cols-4 {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-            }
-        }
-        @media (min-width: 1024px) {
-            .lg\:grid-cols-4 {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-            }
-        }
-    </style>
+    </script>
     <script>
         setInterval(function () {
             let now = new Date();
