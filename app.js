@@ -22,7 +22,8 @@ const pageRoutes = [
     'login',
     'privacy-policy',
     'terms-and-conditions',
-    'yearsChart'
+    'yearsChart',
+    'mostfrequent'
 ];
 
 app.get('/', async (req, res) => {
