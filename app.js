@@ -100,7 +100,7 @@ app.get('/chart-2026/:chartPage', async (req, res) => {
             return res.status(404).send('Chart page not found');
         }
         
-        const currentYear = new Date().getFullYear();
+        const currentYear = req.query.year || new Date().getFullYear();
         const chartRes = await fetch(`${API_BASE_URL}/charts/yearly/${encodeURIComponent(targetGame)}?year=${currentYear}`);
         const chartDataResponse = chartRes.ok ? await chartRes.json() : null;
         const chartData = chartDataResponse ? chartDataResponse.data : null;
@@ -124,7 +124,7 @@ app.post('/gameYearResults', (req, res) => {
         return res.redirect('/');
     }
 
-    const target = `/chart-2026/${game}`;
+    const target = `/chart-2026/${game}${year ? `?year=${year}` : ''}`;
     return res.redirect(target);
 });
 
