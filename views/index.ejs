@@ -32,8 +32,8 @@
                             <span class="sr-only">Info</span>
                             <div class="text-2xl font-medium text-center md:font-medium md:text-base">
                                 <p class="mb-1 text-3xl font-bold text-white uppercase md:font-medium md:text-base"><%= card.name %></p>
-                                <% if (card.latestResult && card.latestResult.result) { %>
-                                    <span class="text-3xl font-bold lead text-gray-50"><%= card.latestResult.result %></span>
+                                <% if (card.latestResult) { %>
+                                    <span class="text-3xl font-bold lead text-gray-50"><%= typeof card.latestResult === 'object' ? card.latestResult.result : card.latestResult %></span>
                                 <% } else { %>
                                     <svg aria-hidden="true" class="inline text-gray-200 w-7 h-7 animate-spin fill-green-600"
                                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
