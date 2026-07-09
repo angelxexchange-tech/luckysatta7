@@ -12,8 +12,22 @@
             <div class="w-full mx-auto mb-3 bg-black pb-2 overflow-hidden ">
                 
 
-                <% if (upcomingCards && upcomingCards.length > 0) { %>
-                    <% upcomingCards.slice(0, 2).forEach(card => { %>
+                <% 
+                   const allowedGames = ["delhi bazaar", "shree ganesh", "shri ganesh", "faridabad", "gali", "disawar", "dishawer", "delhibazar"];
+                   let filteredCards = (upcomingCards || []).filter(c => {
+                       const name = (c.name || "").trim().toLowerCase();
+                       // Also remove spaces for strict matching just in case
+                       const strictName = name.replace(/\s+/g, '');
+                       return allowedGames.includes(name) || allowedGames.includes(strictName);
+                   });
+                   
+                   // Fallback to whatever is available if our filter removes everything
+                   if (filteredCards.length === 0 && upcomingCards && upcomingCards.length > 0) {
+                       filteredCards = upcomingCards;
+                   }
+                %>
+                <% if (filteredCards.length > 0) { %>
+                    <% filteredCards.slice(0, 1).forEach(card => { %>
                         <div class="flex items-center justify-center space-y-4 text-sm text-gray-200" role="alert">
                             <span class="sr-only">Info</span>
                             <div class="text-2xl font-medium text-center md:font-medium md:text-base">
@@ -83,80 +97,36 @@
                     if (!game || !game.name) return "#";
                     return "/chart-2026/" + game.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') + "-satta-result";
                 };
-                
-                const disawerCard = findGame("Disawar") || findGame("Dishawer") || {};
-                const faridabadCard = findGame("Faridabad") || {};
-                const ghaziabadCard = findGame("Ghaziabad") || {};
-                const galiCard = findGame("Gali") || {};
             %>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 p-2 md:p-4 w-full">
-                <!-- DISHAWER -->
-                <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden" style="border: 1px solid #dca3a3; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
-                    <div class="text-white py-[8px]" style="background-color: #9c1b1b; border-bottom: 2px solid #841616;">
-                        <div class="text-[1.2rem] font-medium leading-tight tracking-wide">DISHAWER</div>
-                        <div class="text-[1.1rem] font-medium leading-tight mt-[1px]">दिसावर</div>
-                    </div>
-                    <div class="pt-[22px] pb-[16px] flex-grow bg-white">
-                        <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%= getResult(disawerCard) %></div>
-                        <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(disawerCard, "05:15 AM") %></div>
-                    </div>
-                    <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
-                        <a href="<%= getChartUrl(disawerCard) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%= getPrevResult(disawerCard) %></a>
-                        <a href="<%= getChartUrl(disawerCard) %>" class="hover:underline text-[13px]">Record Chart</a>
-                        <a href="/mostfrequent" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- FARIDABAD -->
-                <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden" style="border: 1px solid #dca3a3; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
-                    <div class="text-white py-[8px]" style="background-color: #9c1b1b; border-bottom: 2px solid #841616;">
-                        <div class="text-[1.2rem] font-medium leading-tight tracking-wide">FARIDABAD</div>
-                        <div class="text-[1.1rem] font-medium leading-tight mt-[1px]">फरीदाबाद</div>
-                    </div>
-                    <div class="pt-[22px] pb-[16px] flex-grow bg-white">
-                        <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%= getResult(faridabadCard) %></div>
-                        <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(faridabadCard, "05:45 PM") %></div>
-                    </div>
-                    <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
-                        <a href="<%= getChartUrl(faridabadCard) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%= getPrevResult(faridabadCard) %></a>
-                        <a href="<%= getChartUrl(faridabadCard) %>" class="hover:underline text-[13px]">Record Chart</a>
-                        <a href="/mostfrequent" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- GHAZIABAD -->
-                <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden" style="border: 1px solid #dca3a3; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
-                    <div class="text-white py-[8px]" style="background-color: #9c1b1b; border-bottom: 2px solid #841616;">
-                        <div class="text-[1.2rem] font-medium leading-tight tracking-wide">GHAZIABAD</div>
-                        <div class="text-[1.1rem] font-medium leading-tight mt-[1px]">गाजियाबाद</div>
-                    </div>
-                    <div class="pt-[22px] pb-[16px] flex-grow bg-white">
-                        <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%= getResult(ghaziabadCard) %></div>
-                        <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(ghaziabadCard, "08:15 PM") %></div>
-                    </div>
-                    <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
-                        <a href="<%= getChartUrl(ghaziabadCard) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%= getPrevResult(ghaziabadCard) %></a>
-                        <a href="<%= getChartUrl(ghaziabadCard) %>" class="hover:underline text-[13px]">Record Chart</a>
-                        <a href="/mostfrequent" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- GALI -->
-                <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden" style="border: 1px solid #dca3a3; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
-                    <div class="text-white py-[8px]" style="background-color: #9c1b1b; border-bottom: 2px solid #841616;">
-                        <div class="text-[1.2rem] font-medium leading-tight tracking-wide">GALI</div>
-                        <div class="text-[1.1rem] font-medium leading-tight mt-[1px]">गली</div>
-                    </div>
-                    <div class="pt-[22px] pb-[16px] flex-grow bg-white">
-                        <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%= getResult(galiCard) %></div>
-                        <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(galiCard, "11:15 PM") %></div>
-                    </div>
-                    <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
-                        <a href="<%= getChartUrl(galiCard) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%= getPrevResult(galiCard) %></a>
-                        <a href="<%= getChartUrl(galiCard) %>" class="hover:underline text-[13px]">Record Chart</a>
-                        <a href="/mostfrequent" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
-                    </div>
-                </div>
+                <% if (gr1Games && gr1Games.length > 0) { %>
+                    <% 
+                        const getLatestDeclared = (g) => {
+                            if (g.todayNumber && g.todayNumber.declaredAt) return new Date(g.todayNumber.declaredAt).getTime();
+                            if (g.yesterdayNumber && g.yesterdayNumber.declaredAt) return new Date(g.yesterdayNumber.declaredAt).getTime();
+                            return 0;
+                        };
+                        const sortedGr1Games = gr1Games.slice().sort((a, b) => getLatestDeclared(b) - getLatestDeclared(a));
+                    %>
+                    <% sortedGr1Games.slice(0, 4).forEach(game => { %>
+                        <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden" style="border: 1px solid #dca3a3; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
+                            <div class="text-white py-[12px]" style="background-color: #9c1b1b; border-bottom: 2px solid #841616;">
+                                <div class="text-[1.2rem] font-medium leading-tight tracking-wide"><%= (game.name || "").toUpperCase() %></div>
+                            </div>
+                            <div class="pt-[22px] pb-[16px] flex-grow bg-white">
+                                <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%= getResult(game) %></div>
+                                <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(game, "Time TBA") %></div>
+                            </div>
+                            <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
+                                <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%= getPrevResult(game) %></a>
+                                <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">Record Chart</a>
+                                <a href="/mostfrequent" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-span-2 lg:col-span-4 text-center py-4 text-gray-500">No games available</div>
+                <% } %>
             </div>
 
             <h3 class="py-2 text-lg font-semibold text-center text-blue-600 bg-white">हा भाई यही आती हे सबसे पहले खबर
@@ -164,31 +134,19 @@
 
 
             <section class="bg-white">
+                <% if (typeof kalyanKing !== 'undefined' && kalyanKing) { %>
                 <div class="text-center">
-                    <h3 class="pt-3 text-xl font-bold uppercase"><a href="/chart-2026/disawer-satta-result">DISAWER</a>
+                    <h3 class="pt-3 text-xl font-bold uppercase"><a href="/chart-2026/<%= kalyanKing.game.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') %>-satta-result"><%= kalyanKing.game %></a>
                     </h3>
                     <p class="py-2 text-sm text-gray-800">
-                        05:10 AM </p>
+                        <%= kalyanKing.resultTime || '' %> </p>
                     <div class="flex items-center justify-center">
-                        <strong class="text-2xl">56</strong>
-                        <span
-                            style="box-sizing:border-box;display:inline-block;overflow:hidden;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;position:relative;max-width:100%">
-                            <span
-                                style="box-sizing:border-box;display:block;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;max-width:100%"><img
-                                    style="display:block;max-width:100%;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0"
-                                    alt="" aria-hidden="true"
-                                    src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2760%27%20height=%2760%27/%3e" /></span>
-                            <img alt="next day"
-                                srcSet="/designs/multipleColor1/next.webp 1x, /designs/multipleColor1/next.webp 2x"
-                                src="/designs/multipleColor1/next.webp" decoding="async"
-                                data-nimg="intrinsic"
-                                style="position:absolute;top:0;left:0;bottom:0;right:0;box-sizing:border-box;padding:0;border:none;margin:auto;display:block;width:0;height:0;min-width:100%;max-width:100%;min-height:100%;max-height:100%" /></span>
-
-
-
-                        <strong class="text-2xl">76</strong>
+                        <strong class="text-2xl"><%= kalyanKing.previousResult || 'XX' %></strong>
+                        <span class="mx-4 text-3xl font-bold text-blue-500">➜</span>
+                        <strong class="text-2xl"><%= kalyanKing.latestResult || 'XX' %></strong>
                     </div>
                 </div>
+                <% } %>
         </div>
     </div>
     </div>
@@ -290,6 +248,8 @@
     </section>
 
 
+    <% const topAds = (ads || []).filter(ad => ad.position === 'top' && ad.isActive !== false && ad.site === 'lucky-satta7.com'); %>
+    <% if (topAds.length > 0) { %>
     <section class="grid grid-cols-1 gap-6 lg:grid-cols-2 p-4 md:p-6">
         <div
             class="bg-gradient-to-r from-cyan-400 to-blue-500 border-2 border-cyan-300 border-white/30 shadow-cyan-200/50 relative overflow-hidden text-center px-2 py-6 md:px-8 md:py-8 rounded-2xl md:rounded-3xl backdrop-blur-sm text-white flex flex-col justify-center items-center">
@@ -310,53 +270,16 @@
             <div class="relative z-10 w-full">
                 <div
                     class="text-base md:text-lg mb-4 h-fit leading-6 font-normal text-white/60 drop-shadow-sm [&amp;_a]:text-white [&amp;_a]:underline [&amp;_a]:hover:no-underline [&amp;_a]:font-bold [&amp;_strong]:text-white [&amp;_strong]:font-black [&amp;_em]:text-white/80 [&amp;_em]:italic [&amp;_p]:mb-1 last:[&amp;_p]:mb-0 ">
-                    <p><strong style="color: #fff;">सीधे सट्टा कंपनी का No 1 खाईवाल</strong></p>
-                    <p style="color: #00FF26;"><strong>♕</strong><strong>♕</strong><strong
-                            style="font-size:20px;">&nbsp; SHYAM BHAI KHAIWAL ♕♕</strong></p>
-                    <div style="color: #00D8F5;">
-                        <p><big><strong>⏰ सदर बाजार ---------- 1:15 pm</strong></big></p>
-
-                        <p><big><strong>⏰ ग्वालियर ------------ 2:15 pm</strong></big></p>
-
-                        <p><big><strong>⏰ दिल्ली बाजार-------- 2:50 pm</strong></big></p>
-
-                        <p><strong><big>⏰ दिल्ली मटका&nbsp;-------- 3:20&nbsp;Pm</big></strong></p>
-
-                        <p><strong><big>⏰ श्री गणेश ----------- 4:25 Pm</big></strong></p>
-
-                        <p><strong><big>⏰ आगरा ------------- 5:20 pm</big></strong></p>
-
-                        <p><strong><big>⏰ फरीदाबाद ---------- 5:50 pm</big></strong></p>
-
-                        <p><strong><big>⏰ अलवर ------------- 7:15 pm</big></strong></p>
-
-                        <p><strong><big>⏰ गाज़ियाबाद -------- 8:40 pm</big></strong></p>
-
-                        <p><strong><big>⏰ द्वारका ------------ 9:50 pm</big></strong></p>
-
-                        <p><strong><big>⏰ गली -------------- 11:30 pm</big></strong></p>
-
-                        <p><strong><big>⏰ दिसावर ------------ 1:30 Am</big></strong></p>
-                    </div>
-                    <!--<p><strong>====================================</strong></p>-->
-                    <!--<p><strong>♕</strong><strong>♕ जोड़ी रेट</strong><strong>♕</strong><strong>♕</strong></p>-->
-                    <!--<p><strong>जोड़ी रेट 10-------960</strong></p>-->
-                    <!--<p><strong>हरूफ रेट 100-----960</strong></p>-->
-                    <p><strong style="font-size:20px; color: #00FF26;">♕♕ SHYAM BHAI KHAIWAL&nbsp;♕♕</strong></p>
-                    <h3><a href="https://Wa.me/+919817840661" target="--blank"><strong>Game Play करने के लिये नीचे लिंक
-                                पर क्लिक करे</strong></a></h3>
-                    <p>
-                        <a href="https://Wa.me/+919817840661" target="--blank"><img
-                                src="https://lucky-satta.com/whatsAppChat.png"
-                                style="height:80px; margin:auto; width:230px" /></a>
-                    </p>
+                    <% topAds.forEach(ad => { %>
+                        <%- ad.content %>
+                    <% }); %>
                 </div>
             </div>
             <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-white/30 rounded-tr-xl"></div>
             <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-white/30 rounded-bl-xl"></div>
         </div>
     </section>
-
+    <% } %>
     </section>
     <h2
         class="flex items-center justify-center text-center px-2 text-xl sm:text-4xl md:text-3xl lg:text-4xl font-bold text-blue-500 leading-tight">
@@ -462,6 +385,8 @@
     </section>
 
 
+    <% const bottomAds = (ads || []).filter(ad => ad.position === 'bottom' && ad.isActive !== false && ad.site === 'lucky-satta7.com'); %>
+    <% if (bottomAds.length > 0) { %>
     <section class="grid grid-cols-1 gap-6 lg:grid-cols-2 p-4 md:p-6">
         <div
             class="bg-gradient-to-r from-cyan-400 to-blue-500 border-2 border-cyan-300 border-white/30 shadow-cyan-200/50 relative overflow-hidden text-center px-2 py-6 md:px-8 md:py-8 rounded-2xl md:rounded-3xl backdrop-blur-sm text-white flex flex-col justify-center items-center">
@@ -482,28 +407,16 @@
             <div class="relative z-10 w-full">
                 <div
                     class="text-base md:text-lg mb-4 h-fit leading-6 font-normal text-white/60 drop-shadow-sm [&amp;_a]:text-white [&amp;_a]:underline [&amp;_a]:hover:no-underline [&amp;_a]:font-bold [&amp;_strong]:text-white [&amp;_strong]:font-black [&amp;_em]:text-white/80 [&amp;_em]:italic [&amp;_p]:mb-1 last:[&amp;_p]:mb-0 ">
-                    <div style="color: #00D8F5;">
-                        <p><strong>नमस्कार साथियो</strong><strong> </strong></p>
-
-                        <p><strong>अपनी गेम का रिजल्ट हमारी web साइट पर लगवाने के लिए संपर्क करें।&nbsp; &nbsp;</strong>
-                        </p>
-                    </div>
-                    <p style="color: #00FF26;"><big><strong>ARUN BHAI&nbsp;</strong></big></p>
-                    <p>
-                        <a href="https://Wa.me/+917206591251" target="--blank"><img
-                                src="https://lucky-satta.com/whatsAppChat.png"
-                                style="height:80px; margin:auto; width:230px" /></a>
-                    </p>
-                    <p style="color: #fff;"><strong>NOTE: इस नंबर पर लीक गेम नही मिलता गेम लेने वाले भाई कॉल या मैसेज न
-                            करें।</strong></p>
+                    <% bottomAds.forEach(ad => { %>
+                        <%- ad.content %>
+                    <% }); %>
                 </div>
             </div>
             <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-white/30 rounded-tr-xl"></div>
             <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-white/30 rounded-bl-xl"></div>
         </div>
     </section>
-
-
+    <% } %>
 
 
 
@@ -1314,7 +1227,7 @@
                             href="/blog/the-truth-behind-faridabad-satta-king-payout-discussions-and-internet-claims">
                             <div class="blog_single_card">
                                 <div class="blog_img_area"><img
-                                        src="/uploads/images/blogImages/1779291335_3451dee84dd722468833.png"
+                                        src="/assets/images/blogImages/blog_faridabad_truth.png"
                                         alt="The Truth Behind Faridabad LUCKY-SATTA 7   Payout Discussions and Internet Claims">
                                 </div>
                                 <div class="blog_text_area">
@@ -1335,7 +1248,7 @@
                             href="/blog/delhi-bazar-satta-charts-2026-understanding-number-trends-market-updates">
                             <div class="blog_single_card">
                                 <div class="blog_img_area"><img
-                                        src="/uploads/images/blogImages/1779291342_74e7b41f194ee1d90d05.png"
+                                        src="/assets/images/blogImages/blog_delhi_bazar_charts.png"
                                         alt="Delhi Bazar Satta Charts 2026: Understanding Number Trends & Market Updates">
                                 </div>
                                 <div class="blog_text_area">
@@ -1353,7 +1266,7 @@
                         <a href="/blog/Lucky-Satta7-guide-2026-how-it-works-important-facts">
                             <div class="blog_single_card">
                                 <div class="blog_img_area"><img
-                                        src="/uploads/images/blogImages/1779291353_85b36fa23b0ef79e79e9.png"
+                                        src="/assets/images/blogImages/blog_lucky_satta7_guide.png"
                                         alt="lucky satta7 Guide 2026: How It Works & Important Facts"></div>
                                 <div class="blog_text_area">
                                     <h4>lucky satta7 Guide 2026: How It Works & Important Facts</h4>

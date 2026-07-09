@@ -1,0 +1,41 @@
+<section class="blog_main_section bg-white pb-10">
+    <div class="blog_top_heading">
+        <a href="/blogs" class="text-white hover:underline text-sm md:text-base">← BACK TO ALL BLOGS</a>
+    </div>
+    <div class="container mx-auto px-4 mt-6">
+        <div class="bg-white rounded-xl shadow-lg border-2 border-orange-200 overflow-hidden max-w-4xl mx-auto">
+            <div class="w-full h-64 md:h-96 relative bg-gray-100">
+                <img src="<%= blog.image %>" alt="<%= blog.title %>" class="w-full h-full object-contain">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6 md:p-10 text-white">
+                    <p class="text-xs md:text-sm font-semibold text-blue-300 mb-2 uppercase tracking-wider"><%= blog.tags %></p>
+                    <h1 class="text-2xl md:text-4xl font-bold leading-tight mb-2"><%= blog.title %></h1>
+                    <p class="text-sm text-gray-300"><%= blog.date %></p>
+                </div>
+            </div>
+            <div class="p-6 md:p-10 text-gray-800 leading-relaxed space-y-6 text-lg">
+                <%- blog.content %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="p-4 text-white bg-[#406e83] shadow md:px-6 md:py-8 mt-10">
+    <div class="sm:flex sm:items-center sm:justify-between"><a class="flex items-center mb-4 sm:mb-0" href="/"><span style="box-sizing:border-box;display:inline-block;overflow:hidden;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;position:relative;max-width:100%"><span style="box-sizing:border-box;display:block;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;max-width:100%"></span></a>
+        <ul class="flex flex-wrap items-center justify-end mb-4 text-sm text-gray-500 md:justify-start sm:mb-0">
+            <li class="flex items-center">
+                <a class="px-2 text-xs md:text-lg text-white hover:underline" href="/privacy-policy">Privacy Policy</a>
+                <span class="text-gray-200 md:hidden">|</span>
+            </li>
+            <li class="flex items-center">
+                <a class="px-2 text-xs md:text-lg text-white hover:underline" href="/terms-and-conditions">Terms &amp; Conditions</a>
+                <span class="text-gray-200 md:hidden">|</span>
+            </li>
+            <li class="flex items-center">
+                <a class="px-2 text-xs md:text-lg text-white hover:underline" href="/disclaimer">Disclaimer</a>
+            </li>
+        </ul>
+    </div>
+    <hr class=" border-gray-200 sm:mx-auto lg:my-8" />
+    <p class="text-sm text-center text-red-400 ">!! DISCLAIMER:-LUCKY-SATTA 7 .com is a non-commercial website. Viewing This Website Is Your Own Risk. All The Information Shown On Website Is Sponsored And We Warn You That Matka Gambling/Satta May Be Banned Or Illegal In Your Country. We Are Not Responsible For Any Issues Or Scam. We Respect All Country Rules/Laws. If You Are Not Agree With Our Site Disclaimer. Please Quit Our Site Right Now. Thank You.</p>
+    <hr class="text-center border-gray-200 sm:mx-auto lg:my-4" /><span class="block text-sm text-white sm:text-center "> © <a class="hover:underline " href="/">lucky-satta7 OFFICIAL WEBSITE ™</a>. All Rights Reserved.</span>
+</footer>
