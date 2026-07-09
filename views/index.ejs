@@ -46,10 +46,43 @@
                        return false;
                    });
 
-                   // Fallback so the box isn't empty: show next upcoming, or if none, the latest recent
-                   if (filteredCards.length === 0 && validCards.length > 0) {
-                       const nextUpcoming = validCards.find(c => !c.latestResult);
-                       filteredCards = nextUpcoming ? [nextUpcoming] : [validCards[0]];
+                   // Fallback so the box isn't empty: show NEXT upcoming allowed game
+                   if (filteredCards.length === 0) {
+                       let allowedAllGames = (typeof allGames !== 'undefined' ? allGames : []).filter(g => {
+                           const name = (g.name || "").trim().toLowerCase();
+                           const strictName = name.replace(/\s+/g, '');
+                           return allowedGames.includes(name) || allowedGames.includes(strictName);
+                       });
+
+                       const fallbackNow = new Date();
+                       const fallbackIstTime = new Date(fallbackNow.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+                       const currentMins = fallbackIstTime.getHours() * 60 + fallbackIstTime.getMinutes();
+                       let nextUpcomingGame = null;
+                       let minDiff = Infinity;
+
+                       allowedAllGames.forEach(g => {
+                           if (g.resultTime) {
+                               const [h, m] = g.resultTime.split(':').map(Number);
+                               const gameMins = h * 60 + m;
+                               let diff = gameMins - currentMins;
+                               if (diff <= 0) {
+                                   diff += 24 * 60; // if it already passed today, it's next tomorrow
+                               }
+                               // Ignore games that just passed within 40 mins because they would already be in filteredCards if they were returned by the API
+                               if (diff < minDiff && diff > 40) {
+                                   minDiff = diff;
+                                   nextUpcomingGame = g;
+                               }
+                           }
+                       });
+
+                       if (nextUpcomingGame) {
+                           filteredCards = [{
+                               name: nextUpcomingGame.name,
+                               latestResult: null, // Force upcoming spinner
+                               resultTime: nextUpcomingGame.resultTime
+                           }];
+                       }
                    }
                 %>
                 <% if (filteredCards.length > 0) { %>
