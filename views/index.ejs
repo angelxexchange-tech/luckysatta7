@@ -27,8 +27,8 @@
                    }
                 %>
                 <% if (filteredCards.length > 0) { %>
-                    <% filteredCards.slice(0, 1).forEach(card => { %>
-                        <div class="flex items-center justify-center space-y-4 text-sm text-gray-200" role="alert">
+                    <% filteredCards.forEach((card, index) => { %>
+                        <div class="upcoming-game-slide flex flex-col items-center justify-center text-sm text-gray-200 transition-opacity duration-500 ease-in-out <%= index === 0 ? 'block opacity-100' : 'hidden opacity-0' %>" role="alert" data-index="<%= index %>">
                             <span class="sr-only">Info</span>
                             <div class="text-2xl font-medium text-center md:font-medium md:text-base">
                                 <p class="mb-1 text-3xl font-bold text-white uppercase md:font-medium md:text-base"><%= card.name %></p>
@@ -48,6 +48,21 @@
                             </div>
                         </div>
                     <% }); %>
+                    <% if (filteredCards.length > 1) { %>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const slides = document.querySelectorAll('.upcoming-game-slide');
+                                let currentSlide = 0;
+                                setInterval(() => {
+                                    slides[currentSlide].classList.remove('block', 'opacity-100');
+                                    slides[currentSlide].classList.add('hidden', 'opacity-0');
+                                    currentSlide = (currentSlide + 1) % slides.length;
+                                    slides[currentSlide].classList.remove('hidden', 'opacity-0');
+                                    slides[currentSlide].classList.add('block', 'opacity-100');
+                                }, 3000);
+                            });
+                        </script>
+                    <% } %>
                 <% } else { %>
                     <div class="flex items-center justify-center space-y-4 text-sm text-gray-200" role="alert">
                         <span class="sr-only">Info</span>
