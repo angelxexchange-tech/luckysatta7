@@ -14,16 +14,42 @@
 
                 <% 
                    const allowedGames = ["delhi bazaar", "shree ganesh", "shri ganesh", "faridabad", "gali", "disawar", "dishawer", "delhibazar"];
-                   let filteredCards = (upcomingCards || []).filter(c => {
+                   let validCards = (upcomingCards || []).filter(c => {
                        const name = (c.name || "").trim().toLowerCase();
-                       // Also remove spaces for strict matching just in case
                        const strictName = name.replace(/\s+/g, '');
                        return allowedGames.includes(name) || allowedGames.includes(strictName);
                    });
                    
-                   // Fallback to whatever is available if our filter removes everything
-                   if (filteredCards.length === 0 && upcomingCards && upcomingCards.length > 0) {
-                       filteredCards = upcomingCards;
+                   if (validCards.length === 0 && upcomingCards && upcomingCards.length > 0) {
+                       validCards = upcomingCards;
+                   }
+
+                   let filteredCards = validCards.filter(c => {
+                       if (!c.latestResult) return true; // It's upcoming, show it
+                       
+                       if (c.resultTime) {
+                           const [hours, minutes] = c.resultTime.split(':').map(Number);
+                           const now = new Date();
+                           // Convert now to IST to match resultTime
+                           const istTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+                           let resultDate = new Date(istTime);
+                           resultDate.setHours(hours, minutes, 0, 0);
+                           
+                           // Handle overnight wraps
+                           if (istTime.getTime() < resultDate.getTime() && hours > 12 && istTime.getHours() < 12) {
+                               resultDate.setDate(resultDate.getDate() - 1);
+                           }
+                           
+                           const diffMins = (istTime.getTime() - resultDate.getTime()) / 60000;
+                           return diffMins >= 0 && diffMins <= 25; // Show if within 25 minutes
+                       }
+                       return false;
+                   });
+
+                   // Fallback so the box isn't empty: show next upcoming, or if none, the latest recent
+                   if (filteredCards.length === 0 && validCards.length > 0) {
+                       const nextUpcoming = validCards.find(c => !c.latestResult);
+                       filteredCards = nextUpcoming ? [nextUpcoming] : [validCards[0]];
                    }
                 %>
                 <% if (filteredCards.length > 0) { %>
