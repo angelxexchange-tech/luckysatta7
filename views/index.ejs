@@ -154,7 +154,6 @@
                 const getResult = (game) => {
                     if (!game) return "XX";
                     if (game.todayNumber && game.todayNumber.value) return game.todayNumber.value;
-                    if (game.yesterdayNumber && game.yesterdayNumber.value) return game.yesterdayNumber.value;
                     return "XX";
                 };
                 const getPrevResult = (game) => {
@@ -175,17 +174,99 @@
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 p-2 md:p-4 w-full">
                 <% if (gr1Games && gr1Games.length > 0) { %>
                     <% 
-                        const getLatestDeclared = (g) => {
-                            if (g.todayNumber && g.todayNumber.declaredAt) return new Date(g.todayNumber.declaredAt).getTime();
-                            if (g.yesterdayNumber && g.yesterdayNumber.declaredAt) return new Date(g.yesterdayNumber.declaredAt).getTime();
-                            return 0;
+                        const hindiNames = {
+                            "faridabad": "फ़रीदाबाद",
+                            "paisa bazaar": "पैसा बाज़ार",
+                            "shree ganesh": "श्री गणेश",
+                            "shri ganesh": "श्री गणेश",
+                            "delhi bazaar": "दिल्ली बाज़ार",
+                            "delhibazar": "दिल्ली बाज़ार",
+                            "gali": "गली",
+                            "disawar": "दिसावर",
+                            "dishawer": "दिसावर",
+                            "delhi state": "दिल्ली स्टेट",
+                            "pune city": "पुणे सिटी",
+                            "kalyan": "कल्याण",
+                            "mumbai": "मुंबई",
+                            "city bazaar": "सिटी बाज़ार",
+                            "navi mumbai": "नवी मुंबई",
+                            "delhi king": "दिल्ली किंग",
+                            "ajmer sharif": "अजमेर शरीफ",
+                            "ayodya nagari": "अयोध्या नगरी",
+                            "bhagya rekha": "भाग्य रेखा",
+                            "bitcoin": "बिटकॉइन",
+                            "chandigarh city": "चंडीगढ़ सिटी",
+                            "cyber city": "साइबर सिटी",
+                            "dhaula kuan": "धौला कुआँ",
+                            "ghanta ghar": "घंटा घर",
+                            "ghaziabad": "गाज़ियाबाद",
+                            "golden city": "गोल्डन सिटी",
+                            "g-town": "जी-टाउन",
+                            "jai bheem": "जय भीम",
+                            "jamuna paar": "जमुना पार",
+                            "kalyan king": "कल्याण किंग",
+                            "maa ganga": "माँ गंगा",
+                            "miraz": "मिराज़",
+                            "sadar bazaar": "सदर बाज़ार",
+                            "sector 17": "सेक्टर 17",
+                            "subh labh": "शुभ लाभ"
                         };
-                        const sortedGr1Games = gr1Games.slice().sort((a, b) => getLatestDeclared(b) - getLatestDeclared(a));
+                        const getHindiName = (name) => {
+                            if (!name) return "";
+                            const n = name.replace(/\s+/g, ' ').trim().toLowerCase();
+                            return hindiNames[n] ? hindiNames[n] : "";
+                        };
+
+                        const now = new Date();
+                        const istTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+                        const currentMins = istTime.getHours() * 60 + istTime.getMinutes();
+
+                        const getMins = (timeStr) => {
+                            if (!timeStr) return 24 * 60;
+                            const [h, m] = timeStr.split(':').map(Number);
+                            return h * 60 + m;
+                        };
+
+                        let recentGames = gr1Games.filter(g => {
+                            if (g.todayNumber && g.todayNumber.value && g.todayNumber.declaredAt) {
+                                const declaredTime = new Date(g.todayNumber.declaredAt);
+                                const diffMins = (now.getTime() - declaredTime.getTime()) / 60000;
+                                return diffMins >= 0 && diffMins <= 30; 
+                            }
+                            return false;
+                        });
+
+                        recentGames.sort((a, b) => {
+                            const dA = new Date(a.todayNumber.declaredAt).getTime();
+                            const dB = new Date(b.todayNumber.declaredAt).getTime();
+                            return dB - dA; 
+                        });
+
+                        let upcomingGames = gr1Games.filter(g => {
+                            return !(g.todayNumber && g.todayNumber.value);
+                        });
+
+                        upcomingGames.sort((a, b) => {
+                            let mA = getMins(a.resultTime);
+                            let mB = getMins(b.resultTime);
+                            if (mA < currentMins - 60) mA += 24 * 60;
+                            if (mB < currentMins - 60) mB += 24 * 60;
+                            return mA - mB;
+                        });
+
+                        let displayGames = [...recentGames, ...upcomingGames];
+
+                        if (displayGames.length === 0) {
+                            displayGames = gr1Games.slice();
+                        }
                     %>
-                    <% sortedGr1Games.slice(0, 4).forEach(game => { %>
+                    <% displayGames.slice(0, 4).forEach(game => { %>
                         <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden" style="border: 1px solid #dca3a3; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
-                            <div class="text-white py-[12px]" style="background-color: #9c1b1b; border-bottom: 2px solid #841616;">
+                            <div class="text-white py-[8px]" style="background-color: #9c1b1b; border-bottom: 2px solid #841616;">
                                 <div class="text-[1.2rem] font-medium leading-tight tracking-wide"><%= (game.name || "").toUpperCase() %></div>
+                                <% const hName = getHindiName(game.name); if(hName) { %>
+                                    <div class="text-[0.9rem] font-medium leading-tight"><%= hName %></div>
+                                <% } %>
                             </div>
                             <div class="pt-[22px] pb-[16px] flex-grow bg-white">
                                 <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%= getResult(game) %></div>
