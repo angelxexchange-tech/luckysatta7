@@ -151,17 +151,18 @@
                 const findGame = (name) => {
                     return (gr1Games || []).find(g => g.name && g.name.toLowerCase().trim() === name.toLowerCase().trim()) || null;
                 };
+                const waitingSpinner = '<div class="waiting-box"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text">Waiting...</span></div>';
                 const getResult = (game) => {
-                    if (!game) return "XX";
+                    if (!game) return waitingSpinner;
                     if (game.todayNumber && game.todayNumber.value) return game.todayNumber.value;
-                    return "XX";
+                    return waitingSpinner;
                 };
                 const getPrevResult = (game) => {
-                    if (!game) return "XX";
+                    if (!game) return waitingSpinner;
                     if (game.yesterdayNumber && game.yesterdayNumber.value) {
                         return game.yesterdayNumber.value;
                     }
-                    return "XX";
+                    return waitingSpinner;
                 };
                 const getTime = (game, defaultTime) => {
                     return (game && game.resultTime12h) ? game.resultTime12h : defaultTime;
@@ -269,11 +270,11 @@
                                 <% } %>
                             </div>
                             <div class="pt-[22px] pb-[16px] flex-grow bg-white">
-                                <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%= getResult(game) %></div>
+                                <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%- getResult(game) %></div>
                                 <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(game, "Time TBA") %></div>
                             </div>
                             <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
-                                <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%= getPrevResult(game) %></a>
+                                <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%- getPrevResult(game) %></a>
                                 <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">Record Chart</a>
                                 <a href="/mostfrequent" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
                             </div>
@@ -296,9 +297,9 @@
                     <p class="py-2 text-sm text-gray-800">
                         <%= kalyanKing.resultTime || '' %> </p>
                     <div class="flex items-center justify-center">
-                        <strong class="text-2xl"><%= kalyanKing.previousResult || 'XX' %></strong>
+                        <strong class="text-2xl"><% if (kalyanKing.previousResult) { %><%= kalyanKing.previousResult %><% } else { %><div class="waiting-box-sm" style="display:inline-flex"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text-sm">Waiting...</span></div><% } %></strong>
                         <span class="mx-4 text-3xl font-bold text-blue-500">➜</span>
-                        <strong class="text-2xl"><%= kalyanKing.latestResult || 'XX' %></strong>
+                        <strong class="text-2xl"><% if (kalyanKing.latestResult) { %><%= kalyanKing.latestResult %><% } else { %><div class="waiting-box-sm" style="display:inline-flex"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text-sm">Waiting...</span></div><% } %></strong>
                     </div>
                 </div>
                 <% } %>
@@ -458,8 +459,9 @@
                 %>
                 <% gr1Games.forEach(game => { 
                     const chartUrl = `/chart-2026/${getChartSlug(game.name)}`;
-                    const todayVal = (game.todayNumber && game.todayNumber.value) ? game.todayNumber.value : "XX";
-                    const yestVal = (game.yesterdayNumber && game.yesterdayNumber.value) ? game.yesterdayNumber.value : "XX";
+                    const listWaitSpinner = '<div class="waiting-box-sm"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text-sm">Waiting...</span></div>';
+                    const todayVal = (game.todayNumber && game.todayNumber.value) ? game.todayNumber.value : listWaitSpinner;
+                    const yestVal = (game.yesterdayNumber && game.yesterdayNumber.value) ? game.yesterdayNumber.value : listWaitSpinner;
                 %>
                 <div class="flex items-center justify-around space-x-4 border border-gray-900 ">
                     <div class="w-full p-3">
@@ -474,9 +476,9 @@
                     </div>
                     <div class="flex items-center justify-around w-[75%]">
                         <p class="text-2xl font-medium tracking-wider">
-                            <%= yestVal %> </p>
+                            <%- yestVal %> </p>
                         <p class="text-2xl font-medium tracking-wider">
-                            <%= todayVal %> </p>
+                            <%- todayVal %> </p>
                     </div>
                 </div>
                 <% }); %>
@@ -513,8 +515,9 @@
                 %>
                 <% gr2Games.forEach(game => { 
                     const chartUrl = `/chart-2026/${getChartSlug2(game.name)}`;
-                    const todayVal = (game.todayNumber && game.todayNumber.value) ? game.todayNumber.value : "XX";
-                    const yestVal = (game.yesterdayNumber && game.yesterdayNumber.value) ? game.yesterdayNumber.value : "XX";
+                    const listWaitSpinner2 = '<div class="waiting-box-sm"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text-sm">Waiting...</span></div>';
+                    const todayVal = (game.todayNumber && game.todayNumber.value) ? game.todayNumber.value : listWaitSpinner2;
+                    const yestVal = (game.yesterdayNumber && game.yesterdayNumber.value) ? game.yesterdayNumber.value : listWaitSpinner2;
                 %>
                 <div class="flex items-center justify-around space-x-4 border border-gray-900 ">
                     <div class="w-full p-3">
@@ -529,9 +532,9 @@
                     </div>
                     <div class="flex items-center justify-around w-[75%]">
                         <p class="text-2xl font-medium tracking-wider">
-                            <%= yestVal %> </p>
+                            <%- yestVal %> </p>
                         <p class="text-2xl font-medium tracking-wider">
-                            <%= todayVal %> </p>
+                            <%- todayVal %> </p>
                     </div>
                 </div>
                 <% }); %>
@@ -708,6 +711,76 @@
 
 
     <style>
+        /* ===== Waiting Indicator Styles ===== */
+        @keyframes dotPulse {
+            0%, 80%, 100% { transform: scale(0.4); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .waiting-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 0;
+        }
+        .waiting-box-sm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 2px 0;
+        }
+        .waiting-dots {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .waiting-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e53e3e, #f56565);
+            animation: dotPulse 1.4s ease-in-out infinite;
+            box-shadow: 0 0 6px rgba(229, 62, 62, 0.4);
+        }
+        .waiting-box-sm .waiting-dots .dot {
+            width: 7px;
+            height: 7px;
+            box-shadow: 0 0 4px rgba(229, 62, 62, 0.3);
+        }
+        .waiting-dots .dot1 { animation-delay: 0s; }
+        .waiting-dots .dot2 { animation-delay: 0.2s; }
+        .waiting-dots .dot3 { animation-delay: 0.4s; }
+        .waiting-text {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #b91c1c, #ef4444, #f97316, #ef4444, #b91c1c);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 2.5s linear infinite;
+        }
+        .waiting-text-sm {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #b91c1c, #ef4444, #f97316, #ef4444, #b91c1c);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 2.5s linear infinite;
+        }
         /* FAQ Container */
         .faq_block {
             padding: 20px 0;
