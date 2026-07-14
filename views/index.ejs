@@ -85,6 +85,56 @@
                        }
                    }
                 %>
+                <% 
+                   const tickerCards = (gr1Games && gr1Games.length > 0) ? gr1Games : ((validCards && validCards.length > 0) ? validCards : (upcomingCards || []));
+                   const parseMins = (timeStr) => {
+                       if (!timeStr) return 24 * 60;
+                       const normalized = timeStr.toString().trim().toUpperCase();
+                       const ampmMatch = normalized.match(/(AM|PM)$/);
+                       if (ampmMatch) {
+                           const timePart = normalized.replace(/(AM|PM)$/, '').trim();
+                           const parts = timePart.split(':').map(Number);
+                           let hours = parts[0] % 12;
+                           if (ampmMatch[1] === 'PM') hours += 12;
+                           return hours * 60 + (parts[1] || 0);
+                       }
+                       const parts = normalized.split(':').map(Number);
+                       if (parts.length >= 2) return (parts[0] || 0) * 60 + (parts[1] || 0);
+                       return 24 * 60;
+                   };
+                   const isDone = (c) => Boolean((c.todayNumber && c.todayNumber.value) || c.latestResult);
+                   const doneItems = tickerCards.slice().filter(isDone).sort((a, b) => {
+                       const aTime = a.todayNumber && a.todayNumber.declaredAt ? new Date(a.todayNumber.declaredAt).getTime() : parseMins(a.resultTime);
+                       const bTime = b.todayNumber && b.todayNumber.declaredAt ? new Date(b.todayNumber.declaredAt).getTime() : parseMins(b.resultTime);
+                       return bTime - aTime;
+                   });
+                   const upcomingItems = tickerCards.slice().filter(c => !isDone(c)).sort((a, b) => parseMins(a.resultTime) - parseMins(b.resultTime));
+                   const selectedItems = doneItems.slice(0, 4).concat(upcomingItems.slice(0, 2));
+                   const waitSpinnerHtml = '<span class="ticker-waiting"><span class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></span><span class="waiting-text-sm">WAITING</span></span>';
+                   const tickerItems = selectedItems.map(c => {
+                       const name = (c.name || "").toUpperCase();
+                       let statusHtml = '';
+                       if (c.todayNumber && c.todayNumber.value) {
+                           statusHtml = `<span class="ticker-result">${c.todayNumber.value}</span>`;
+                       } else if (c.latestResult) {
+                           const value = (typeof c.latestResult === 'object') ? c.latestResult.result : c.latestResult;
+                           statusHtml = `<span class="ticker-result">${value}</span>`;
+                       } else if (!c.resultTime) {
+                           statusHtml = `<span class="ticker-result">PENDING</span> ${waitSpinnerHtml}`;
+                       } else {
+                           statusHtml = `<span class="ticker-time">${c.resultTime}</span> ${waitSpinnerHtml}`;
+                       }
+                       return `<span class="ticker-item"><span class="ticker-name">${name}</span> ${statusHtml}</span>`;
+                   }).filter(item => item && item.trim().length > 0);
+                %>
+                <% if (tickerItems.length > 0) { %>
+                    <div class="bg-blue-600 border border-blue-700 px-3 py-2 overflow-hidden rounded-md shadow-inner">
+                        <marquee behavior="scroll" direction="left" scrollamount="4" class="text-base font-semibold text-center text-white uppercase tracking-wider">
+                            <%- tickerItems.join('<span class="ticker-sep"> | </span>') %>
+                        </marquee>
+                    </div>
+                <% } %>
+
                 <% if (filteredCards.length > 0) { %>
                     <% filteredCards.forEach((card, index) => { %>
                         <div class="upcoming-game-slide flex flex-col items-center justify-center text-sm text-gray-200 transition-opacity duration-500 ease-in-out <%= index === 0 ? 'block opacity-100' : 'hidden opacity-0' %>" role="alert" data-index="<%= index %>">
@@ -224,41 +274,75 @@
 
                         const getMins = (timeStr) => {
                             if (!timeStr) return 24 * 60;
-                            const [h, m] = timeStr.split(':').map(Number);
-                            return h * 60 + m;
+                            const value = timeStr.toString().trim();
+                            const ampmMatch = value.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+                            if (ampmMatch) {
+                                let hours = Number(ampmMatch[1]);
+                                const minutes = Number(ampmMatch[2]);
+                                const ampm = ampmMatch[3].toUpperCase();
+                                if (hours === 12) {
+                                    hours = (ampm === 'AM') ? 0 : 12;
+                                } else if (ampm === 'PM') {
+                                    hours += 12;
+                                }
+                                return hours * 60 + minutes;
+                            }
+                            const [h, m] = value.split(':').map(Number);
+                            if (Number.isFinite(h) && Number.isFinite(m)) {
+                                return h * 60 + m;
+                            }
+                            return 24 * 60;
                         };
 
-                        let recentGames = gr1Games.filter(g => {
-                            if (g.todayNumber && g.todayNumber.value && g.todayNumber.declaredAt) {
-                                const declaredTime = new Date(g.todayNumber.declaredAt);
-                                const diffMins = (now.getTime() - declaredTime.getTime()) / 60000;
-                                return diffMins >= 0 && diffMins <= 30; 
+                        const declaredGames = gr1Games.filter(g => g.todayNumber && g.todayNumber.value);
+                        const upcomingGames = gr1Games.filter(g => !(g.todayNumber && g.todayNumber.value));
+
+                        const sortByResultTime = (games) => {
+                            return games.slice().sort((a, b) => {
+                                let aMins = getMins(a.resultTime);
+                                let bMins = getMins(b.resultTime);
+                                return aMins - bMins;
+                            });
+                        };
+
+                        const sortedUpcoming = upcomingGames.slice().sort((a, b) => {
+                            let aMins = getMins(a.resultTime);
+                            let bMins = getMins(b.resultTime);
+                            if (aMins < currentMins - 60) aMins += 24 * 60;
+                            if (bMins < currentMins - 60) bMins += 24 * 60;
+                            return aMins - bMins;
+                        });
+
+                        const nextUpcoming = sortedUpcoming[0] || null;
+                        let previousDeclared = [];
+
+                        if (nextUpcoming) {
+                            previousDeclared = declaredGames.filter(g => getMins(g.resultTime) < getMins(nextUpcoming.resultTime));
+                            previousDeclared = sortByResultTime(previousDeclared);
+                        }
+
+                        if (previousDeclared.length < 3) {
+                            const extraDeclared = sortByResultTime(declaredGames)
+                                .filter(g => !previousDeclared.includes(g) && g !== nextUpcoming);
+                            while (previousDeclared.length < 3 && extraDeclared.length > 0) {
+                                previousDeclared.unshift(extraDeclared.pop());
                             }
-                            return false;
-                        });
+                        }
 
-                        recentGames.sort((a, b) => {
-                            const dA = new Date(a.todayNumber.declaredAt).getTime();
-                            const dB = new Date(b.todayNumber.declaredAt).getTime();
-                            return dB - dA; 
-                        });
+                        let displayGames = [];
+                        if (previousDeclared.length > 0) {
+                            displayGames = previousDeclared.slice(-3);
+                        }
+                        if (nextUpcoming) {
+                            displayGames.push(nextUpcoming);
+                        }
 
-                        let upcomingGames = gr1Games.filter(g => {
-                            return !(g.todayNumber && g.todayNumber.value);
-                        });
-
-                        upcomingGames.sort((a, b) => {
-                            let mA = getMins(a.resultTime);
-                            let mB = getMins(b.resultTime);
-                            if (mA < currentMins - 60) mA += 24 * 60;
-                            if (mB < currentMins - 60) mB += 24 * 60;
-                            return mA - mB;
-                        });
-
-                        let displayGames = [...recentGames, ...upcomingGames];
-
-                        if (displayGames.length === 0) {
-                            displayGames = gr1Games.slice();
+                        if (displayGames.length < 4) {
+                            const fillGames = gr1Games.filter(g => !displayGames.includes(g));
+                            const fillSorted = sortByResultTime(fillGames);
+                            while (displayGames.length < 4 && fillSorted.length > 0) {
+                                displayGames.push(fillSorted.shift());
+                            }
                         }
                     %>
                     <% displayGames.slice(0, 4).forEach(game => { %>
@@ -780,6 +864,30 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: shimmer 2.5s linear infinite;
+        }
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-right: 1.5rem;
+        }
+        .ticker-name {
+            font-weight: 700;
+        }
+        .ticker-result,
+        .ticker-time {
+            font-weight: 700;
+        }
+        .ticker-sep {
+            display: inline-block;
+            margin: 0 0.75rem;
+            color: rgba(255,255,255,0.65);
+        }
+        .ticker-waiting {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            vertical-align: middle;
         }
         /* FAQ Container */
         .faq_block {
