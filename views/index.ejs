@@ -446,68 +446,16 @@
     </div>
     </div>
 
-    <section class="grid grid-cols-1 gap-2 bg-white lg:grid-cols-1">
-        <div
-            style="box-sizing:border-box;position:relative;display:flex;flex-direction:column;max-width:100%;margin-left:auto;margin-right:auto;overflow-wrap:breakWord;background-color:#ffffff;background-clip:borderBox;overflow:hidden;border:0px;border-radius:0.25rem;margin-top:0.5rem;margin-bottom:0.5rem">
-            <div class="row">
-                <div class="card-body"
-                    style="box-sizing:borderBox;flex:1 1 auto;min-height:1px;padding:1.25rem;border:1px dashed red;background:#ffd800;border-radius:20px;font-weight:bold">
-                    <h3 class="blink_black"> "Now WhatsApp players can also join our WhatsApp channel to get results
-                        quickly and receive superfast results."</h3>
-                    <a href="https://whatsapp.com/channel/0029VafVyGV1SWsynynlOO0W" target="--blank"><img
-                            src="https://lucky-satta.com/whatsAppChat.png"
-                            style="height:80px; margin:auto; width:230px" /></a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="grid grid-cols-1 gap-2 bg-white lg:grid-cols-1">
-        <div
-            style="box-sizing:border-box;position:relative;display:flex;flex-direction:column;max-width:100%;margin-left:auto;margin-right:auto;overflow-wrap:breakWord;background-color:#ffffff;background-clip:borderBox;overflow:hidden;border:0px;border-radius:0.25rem;margin-top:0.5rem;margin-bottom:0.5rem">
-            <div class="row">
-                <div class="card-body"
-                    style="box-sizing:borderBox;flex:1 1 auto;min-height:1px;padding:1.25rem;border:1px dashed red;background:#ffd800;border-radius:20px;font-weight:bold">
-                    <h3 class="blink_black">"Now Telegram players can also join our Telegram channel to get results
-                        quickly and receive superfast results."</h3>
-                    <a href="#" target="--blank"><img
-                            src="https://lucky-satta.com/telegramLogoChat.png"
-                            style="height:80px; margin:auto; width:230px" /></a>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
     <% const topAds = (ads || []).filter(ad => ad.position === 'top' && ad.isActive !== false && ad.site === 'lucky-satta7.com'); %>
     <% if (topAds.length > 0) { %>
-    <section class="grid grid-cols-1 gap-6 lg:grid-cols-2 p-4 md:p-6">
-        <div
-            class="bg-gradient-to-r from-cyan-400 to-blue-500 border-2 border-cyan-300 border-white/30 shadow-cyan-200/50 relative overflow-hidden text-center px-2 py-6 md:px-8 md:py-8 rounded-2xl md:rounded-3xl backdrop-blur-sm text-white flex flex-col justify-center items-center">
-            <div class="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
-                <div
-                    class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500">
-                </div>
-                <div
-                    class="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500">
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+    <section class="flex flex-col gap-4 px-2 md:px-4 mt-4 mb-2 max-w-3xl mx-auto w-full">
+        <% topAds.forEach(ad => { %>
+            <div class="w-full p-4 border border-dashed border-red-500 bg-[#ffd800] rounded-[20px] font-bold text-center text-black shadow-sm overflow-hidden flex flex-col justify-center items-center">
+                <%- ad.content %>
             </div>
-            <div class="absolute inset-0 rounded-2xl md:rounded-3xl p-[2px]">
-                <div
-                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent ">
-                </div>
-            </div>
-            <div class="relative z-10 w-full">
-                <div
-                    class="text-base md:text-lg mb-4 h-fit leading-6 font-normal text-white/60 drop-shadow-sm [&amp;_a]:text-white [&amp;_a]:underline [&amp;_a]:hover:no-underline [&amp;_a]:font-bold [&amp;_strong]:text-white [&amp;_strong]:font-black [&amp;_em]:text-white/80 [&amp;_em]:italic [&amp;_p]:mb-1 last:[&amp;_p]:mb-0 ">
-                    <% topAds.forEach(ad => { %>
-                        <%- ad.content %>
-                    <% }); %>
-                </div>
-            </div>
-            <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-white/30 rounded-tr-xl"></div>
-            <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-white/30 rounded-bl-xl"></div>
-        </div>
+        <% }); %>
     </section>
     <% } %>
     </section>
@@ -619,34 +567,12 @@
 
     <% const bottomAds = (ads || []).filter(ad => ad.position === 'bottom' && ad.isActive !== false && ad.site === 'lucky-satta7.com'); %>
     <% if (bottomAds.length > 0) { %>
-    <section class="grid grid-cols-1 gap-6 lg:grid-cols-2 p-4 md:p-6">
-        <div
-            class="bg-gradient-to-r from-cyan-400 to-blue-500 border-2 border-cyan-300 border-white/30 shadow-cyan-200/50 relative overflow-hidden text-center px-2 py-6 md:px-8 md:py-8 rounded-2xl md:rounded-3xl backdrop-blur-sm text-white flex flex-col justify-center items-center">
-            <div class="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
-                <div
-                    class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500">
-                </div>
-                <div
-                    class="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500">
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+    <section class="flex flex-col gap-4 px-2 md:px-4 mt-4 mb-2 max-w-3xl mx-auto w-full">
+        <% bottomAds.forEach(ad => { %>
+            <div class="w-full p-4 border border-dashed border-red-500 bg-[#ffd800] rounded-[20px] font-bold text-center text-black shadow-sm overflow-hidden flex flex-col justify-center items-center">
+                <%- ad.content %>
             </div>
-            <div class="absolute inset-0 rounded-2xl md:rounded-3xl p-[2px]">
-                <div
-                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent">
-                </div>
-            </div>
-            <div class="relative z-10 w-full">
-                <div
-                    class="text-base md:text-lg mb-4 h-fit leading-6 font-normal text-white/60 drop-shadow-sm [&amp;_a]:text-white [&amp;_a]:underline [&amp;_a]:hover:no-underline [&amp;_a]:font-bold [&amp;_strong]:text-white [&amp;_strong]:font-black [&amp;_em]:text-white/80 [&amp;_em]:italic [&amp;_p]:mb-1 last:[&amp;_p]:mb-0 ">
-                    <% bottomAds.forEach(ad => { %>
-                        <%- ad.content %>
-                    <% }); %>
-                </div>
-            </div>
-            <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-white/30 rounded-tr-xl"></div>
-            <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-white/30 rounded-bl-xl"></div>
-        </div>
+        <% }); %>
     </section>
     <% } %>
 
