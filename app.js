@@ -15,6 +15,29 @@ const expressEjsLayouts = require('express-ejs-layouts');
 app.use(expressEjsLayouts);
 app.set('layout', 'layout');
 
+app.use(async (req, res, next) => {
+    try {
+        let pagePath = req.path;
+        if (pagePath === '/') {
+            pagePath = '/home';
+        }
+        
+        const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:4000/api';
+        const site = 'lucky-satta7.com';
+        
+        const seoRes = await fetch(`${API_BASE_URL}/seo/get?page=${encodeURIComponent(pagePath)}&site=${encodeURIComponent(site)}`);
+        if (seoRes.ok) {
+            res.locals.seo = await seoRes.json();
+        } else {
+            res.locals.seo = null;
+        }
+    } catch (err) {
+        console.error("SEO fetch error:", err);
+        res.locals.seo = null;
+    }
+    next();
+});
+
 const pageRoutes = [
     'blogs',
     'contact',

@@ -5,20 +5,48 @@
     <meta charSet="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="description"
-        content="lucky-satta7 results with updated charts, historical records, and fast daily updates. Check Delhi, Faridabad, and Disawar results online." />
+    <% if (locals.seo && locals.seo.metaDescription) { %>
+    <meta name="description" content="<%= locals.seo.metaDescription %>" />
+    <% } else { %>
+    <meta name="description" content="lucky-satta7 results with updated charts, historical records, and fast daily updates. Check Delhi, Faridabad, and Disawar results online." />
+    <% } %>
     
-    
+    <% if (locals.seo && locals.seo.focusKeywords && locals.seo.focusKeywords.length > 0) { %>
+    <meta name="keywords" content="<%= locals.seo.focusKeywords.join(', ') %>" />
+    <% } else { %>
     <meta name="keywords" content="lucky-satta7 – Live Satta Result Today & Chart 2026 " />
+    <% } %>
+
+    <% if (locals.seo && locals.seo.metaTitle) { %>
+    <title><%= locals.seo.metaTitle %></title>
+    <% } else { %>
     <title>lucky-satta7 – LIVE SATTA RESULT TODAY & CHART 2026 </title>
+    <% } %>
+
     <link rel="shortcut icon" type="image/png" href="/7Favicon.png">
+    
+    <% if (locals.seo && locals.seo.canonical) { %>
+    <link rel="canonical" href="<%= locals.seo.canonical %>" />
+    <% } %>
+    
+    <% if (locals.seo && locals.seo.robots) { %>
+    <meta name="robots" content="<%= locals.seo.robots %>" />
+    <% } %>
+    
+    <% if (locals.seo && locals.seo.author) { %>
+    <meta name="author" content="<%= locals.seo.author %>" />
+    <% } %>
+
+    <% if (locals.seo && locals.seo.publisher) { %>
+    <meta name="publisher" content="<%= locals.seo.publisher %>" />
+    <% } %>
+
     <meta property="og:title" content="lucky-satta7official website" />
     <meta property="og:site_name" content="lucky-satta7official website" />
     <meta property="og:locale" content="en_IN" />
     
     <meta property="og:type" content="website" />
-    <meta property="og:description"
-        content="lucky-satta7 results with updated charts, historical records, and fast daily updates. Check Delhi, Faridabad, and Disawar results online." />
+    <meta property="og:description" content="lucky-satta7 results with updated charts, historical records, and fast daily updates. Check Delhi, Faridabad, and Disawar results online." />
     <meta property="og:image" content="/7Favicon.png" />
     
     <link rel="icon" type="favicon" href="7Favicon.png" />
