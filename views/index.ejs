@@ -7,75 +7,61 @@
                 </h1>
             </div>
                 <% 
-                   const allowedGames = ["delhi bazaar", "shree ganesh", "shri ganesh", "faridabad", "gali", "disawar", "dishawer", "delhibazar"];
+                   const allowedGames = ["delhi bazaar", "shree ganesh", "shri ganesh", "faridabad", "ghaziabad", "gali", "disawar", "dishawer", "delhibazar"];
                    let validCards = (upcomingCards || []).filter(c => {
                        const name = (c.name || "").trim().toLowerCase();
                        const strictName = name.replace(/\s+/g, '');
                        return allowedGames.includes(name) || allowedGames.includes(strictName);
                    });
-                   
-                   if (validCards.length === 0 && upcomingCards && upcomingCards.length > 0) {
-                       validCards = upcomingCards;
-                   }
 
-                   let filteredCards = validCards.filter(c => {
-                       if (!c.latestResult) return true; // It's upcoming, show it
-                       
-                       if (c.resultTime) {
-                           const [hours, minutes] = c.resultTime.split(':').map(Number);
-                           const now = new Date();
-                           // Convert now to IST to match resultTime
-                           const istTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
-                           let resultDate = new Date(istTime);
-                           resultDate.setHours(hours, minutes, 0, 0);
-                           
-                           // Handle overnight wraps
-                           if (istTime.getTime() < resultDate.getTime() && hours > 12 && istTime.getHours() < 12) {
-                               resultDate.setDate(resultDate.getDate() - 1);
-                           }
-                           
-                           const diffMins = (istTime.getTime() - resultDate.getTime()) / 60000;
-                           return diffMins >= 0 && diffMins <= 25; // Show if within 25 minutes
-                       }
-                       return false;
+                   const istTime = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+                   const currentMins = istTime.getHours() * 60 + istTime.getMinutes();
+                   let activeGameName = "";
+                   if (currentMins >= 1380 || currentMins < 210) activeGameName = "gali"; // 23:00 to 03:30
+                   else if (currentMins >= 210 && currentMins < 780) activeGameName = "disawar"; // 03:30 to 13:00
+                   else if (currentMins >= 780 && currentMins < 960) activeGameName = "delhi bazaar"; // 13:00 to 16:00
+                   else if (currentMins >= 960 && currentMins < 1020) activeGameName = "shree ganesh"; // 16:00 to 17:00
+                   else if (currentMins >= 1020 && currentMins < 1260) activeGameName = "faridabad"; // 17:00 to 21:00
+                   else if (currentMins >= 1260 && currentMins < 1380) activeGameName = "ghaziabad"; // 21:00 to 23:00
+
+                   let filteredCards = [];
+                   const strictTargetName = activeGameName.replace(/\s+/g, '');
+                   
+                   let activeData = (typeof gr1Games !== 'undefined' ? gr1Games : []).find(g => {
+                       const name = (g.name || "").trim().toLowerCase();
+                       const strictName = name.replace(/\s+/g, '');
+                       return name === activeGameName || strictName === strictTargetName || (activeGameName === 'shree ganesh' && strictName === 'shriganesh');
                    });
 
-                   // Fallback so the box isn't empty: show NEXT upcoming allowed game
-                   if (filteredCards.length === 0) {
-                       let allowedAllGames = (typeof allGames !== 'undefined' ? allGames : []).filter(g => {
-                           const name = (g.name || "").trim().toLowerCase();
+                   if (activeData && activeData.todayNumber && activeData.todayNumber.value) {
+                       filteredCards = [{
+                           name: activeData.name,
+                           latestResult: activeData.todayNumber.value,
+                           resultTime: activeData.resultTime
+                       }];
+                   } else {
+                       let activeUpcoming = validCards.find(c => {
+                           const name = (c.name || "").trim().toLowerCase();
                            const strictName = name.replace(/\s+/g, '');
-                           return allowedGames.includes(name) || allowedGames.includes(strictName);
+                           return name === activeGameName || strictName === strictTargetName || (activeGameName === 'shree ganesh' && strictName === 'shriganesh');
                        });
-
-                       const fallbackNow = new Date();
-                       const fallbackIstTime = new Date(fallbackNow.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
-                       const currentMins = fallbackIstTime.getHours() * 60 + fallbackIstTime.getMinutes();
-                       let nextUpcomingGame = null;
-                       let minDiff = Infinity;
-
-                       allowedAllGames.forEach(g => {
-                           if (g.resultTime) {
-                               const [h, m] = g.resultTime.split(':').map(Number);
-                               const gameMins = h * 60 + m;
-                               let diff = gameMins - currentMins;
-                               if (diff <= 0) {
-                                   diff += 24 * 60; // if it already passed today, it's next tomorrow
-                               }
-                               // Ignore games that just passed within 40 mins because they would already be in filteredCards if they were returned by the API
-                               if (diff < minDiff && diff > 40) {
-                                   minDiff = diff;
-                                   nextUpcomingGame = g;
-                               }
+                       if (activeUpcoming) {
+                           filteredCards = [activeUpcoming];
+                       } else {
+                           let activeStatic = (typeof allGames !== 'undefined' ? allGames : []).find(g => {
+                               const name = (g.name || "").trim().toLowerCase();
+                               const strictName = name.replace(/\s+/g, '');
+                               return name === activeGameName || strictName === strictTargetName || (activeGameName === 'shree ganesh' && strictName === 'shriganesh');
+                           });
+                           if (activeStatic) {
+                               filteredCards = [{
+                                   name: activeStatic.name,
+                                   latestResult: null,
+                                   resultTime: activeStatic.resultTime
+                               }];
+                           } else {
+                               filteredCards = [{ name: activeGameName.toUpperCase(), latestResult: null, resultTime: "" }];
                            }
-                       });
-
-                       if (nextUpcomingGame) {
-                           filteredCards = [{
-                               name: nextUpcomingGame.name,
-                               latestResult: null, // Force upcoming spinner
-                               resultTime: nextUpcomingGame.resultTime
-                           }];
                        }
                    }
                 %>
@@ -121,7 +107,7 @@
                 %>
                 <% if (tickerItems.length > 0) { %>
                     <div class="bg-gradient-to-br from-blue-400 to-pink-700 px-3 py-2 overflow-hidden rounded-md shadow-inner">
-                        <marquee behavior="scroll" direction="left" scrollamount="4" class="text-base font-semibold text-center text-white uppercase tracking-wider">
+                        <marquee behavior="scroll" direction="left" scrollamount="4" class="text-xl md:text-2xl font-bold text-center text-white uppercase tracking-wider">
                             <%- tickerItems.join('<span class="ticker-sep"> | </span>') %>
                         </marquee>
                     </div>
@@ -193,7 +179,7 @@
             </div>
             <% if (tickerItems.length > 0) { %>
                 <div class="bg-gradient-to-br from-blue-400 to-pink-700 px-3 py-2 overflow-hidden rounded-md shadow-inner mb-3">
-                    <marquee behavior="scroll" direction="left" scrollamount="4" class="text-base font-semibold text-center text-white uppercase tracking-wider">
+                    <marquee behavior="scroll" direction="left" scrollamount="4" class="text-xl md:text-2xl font-bold text-center text-white uppercase tracking-wider">
                         <%- tickerItems.join('<span class="ticker-sep"> | </span>') %>
                     </marquee>
                 </div>
@@ -371,6 +357,7 @@
                 <% } %>
             </div>
 
+            <% /* %>
             <h3 class="py-2 text-lg font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-700 bg-white">हा भाई यही आती हे सबसे पहले खबर
                 रूको और देखो</h3>
 
@@ -389,6 +376,7 @@
                     </div>
                 </div>
                 <% } %>
+            <% */ %>
         </div>
     </div>
     </div>
