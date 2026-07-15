@@ -362,7 +362,7 @@
                             <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
                                 <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%- getPrevResult(game) %></a>
                                 <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">Record Chart</a>
-                                <a href="/mostfrequent" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
+                                <a href="/mostfrequent?game=<%= encodeURIComponent(game.name) %>" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
                             </div>
                         </div>
                     <% }); %>

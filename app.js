@@ -44,9 +44,25 @@ const pageRoutes = [
     'disclaimer',
     'login',
     'privacy-policy',
-    'terms-and-conditions',
-    'mostfrequent'
+    'terms-and-conditions'
 ];
+
+app.get('/mostfrequent', async (req, res) => {
+    try {
+        const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:4000/api';
+        const gameParam = req.query.game ? `?game=${encodeURIComponent(req.query.game)}` : '';
+        const freqRes = await fetch(`${API_BASE_URL}/charts/frequent/current${gameParam}`);
+        const freqData = freqRes.ok ? await freqRes.json() : { frequentNumbers: [] };
+        
+        res.render('mostfrequent', { 
+            frequentNumbers: freqData.frequentNumbers || [],
+            game: req.query.game || null
+        });
+    } catch (err) {
+        console.error("Error fetching frequent numbers:", err);
+        res.render('mostfrequent', { frequentNumbers: [] });
+    }
+});
 
 app.get('/yearsChart', async (req, res) => {
     try {
