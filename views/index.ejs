@@ -529,12 +529,10 @@
 
     <section class="row">
         <div>
-            <div class="flex items-center justify-around space-x-4 bg-yellow-400 mt-4">
-                <p class="w-full p-3 font-bold text-white bg-purple-800">GAME LIST</p>
-                <div class="flex items-center justify-around bg-yellow-400 w-[75%]">
-                    <p class="text-lg font-semibold">कल</p>
-                    <p class="text-lg font-semibold">आज</p>
-                </div>
+            <div class="grid grid-cols-5 items-center bg-gradient-to-r from-blue-400 to-pink-700 mt-4 text-white rounded-t-md overflow-hidden">
+                <div class="col-span-3 p-3 font-bold text-white">GAME LIST</div>
+                <div class="col-span-1 text-center font-semibold text-lg">कल</div>
+                <div class="col-span-1 text-center font-semibold text-lg">आज</div>
             </div>
 
             <% if (gr1Games && gr1Games.length > 0) { %>
@@ -549,22 +547,24 @@
                     const todayVal = (game.todayNumber && game.todayNumber.value) ? game.todayNumber.value : listWaitSpinner;
                     const yestVal = (game.yesterdayNumber && game.yesterdayNumber.value) ? game.yesterdayNumber.value : listWaitSpinner;
                 %>
-                <div class="flex items-center justify-around space-x-4 border border-gray-900 ">
-                    <div class="w-full p-3">
+                <div class="grid grid-cols-5 items-center border border-gray-900 bg-white">
+                    <div class="col-span-3 p-3">
                         <p class="pb-2 text-xl font-bold tracking-wide text-gray-900 uppercase cursor-pointer text-start hover:underline hover:text-black">
                             <a href="<%= chartUrl %>"><%= game.name %></a>
                         </p>
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between pr-4">
                             <p class="text-sm font-semibold text-red-900">
                                 <%= game.resultTime12h || "" %> </p><a href="<%= chartUrl %>"
-                                class="px-2 text-xs bg-yellow-400 py-0.5 rounded-md hover:bg-yellow-300 ">View Chart</a>
+                                class="px-2 text-xs bg-gradient-to-r from-blue-400 to-pink-700 text-white py-0.5 rounded-md shadow-sm hover:from-blue-500 hover:to-pink-800 ">View Chart</a>
                         </div>
                     </div>
-                    <div class="flex items-center justify-around w-[75%]">
-                        <p class="text-2xl font-medium tracking-wider">
-                            <%- yestVal %> </p>
-                        <p class="text-2xl font-medium tracking-wider">
-                            <%- todayVal %> </p>
+                    <div class="col-span-1 text-center">
+                        <div class="text-2xl font-medium tracking-wider flex justify-center">
+                            <%- yestVal %> </div>
+                    </div>
+                    <div class="col-span-1 text-center">
+                        <div class="text-2xl font-medium tracking-wider flex justify-center">
+                            <%- todayVal %> </div>
                     </div>
                 </div>
                 <% }); %>
@@ -585,12 +585,10 @@
 
     <section class="row">
         <div>
-            <div class="flex items-center justify-around space-x-4 bg-yellow-400 mt-4">
-                <p class="w-full p-3 font-bold text-white bg-purple-800">GAME LIST</p>
-                <div class="flex items-center justify-around bg-yellow-400 w-[75%]">
-                    <p class="text-lg font-semibold">कल</p>
-                    <p class="text-lg font-semibold">आज</p>
-                </div>
+            <div class="grid grid-cols-5 items-center bg-gradient-to-r from-blue-400 to-pink-700 mt-4 text-white rounded-t-md overflow-hidden">
+                <div class="col-span-3 p-3 font-bold text-white">GAME LIST</div>
+                <div class="col-span-1 text-center font-semibold text-lg">कल</div>
+                <div class="col-span-1 text-center font-semibold text-lg">आज</div>
             </div>
 
             <% if (gr2Games && gr2Games.length > 0) { %>
@@ -605,22 +603,24 @@
                     const todayVal = (game.todayNumber && game.todayNumber.value) ? game.todayNumber.value : listWaitSpinner2;
                     const yestVal = (game.yesterdayNumber && game.yesterdayNumber.value) ? game.yesterdayNumber.value : listWaitSpinner2;
                 %>
-                <div class="flex items-center justify-around space-x-4 border border-gray-900 ">
-                    <div class="w-full p-3">
+                <div class="grid grid-cols-5 items-center border border-gray-900 bg-white">
+                    <div class="col-span-3 p-3">
                         <p class="pb-2 text-xl font-bold tracking-wide text-gray-900 uppercase cursor-pointer text-start hover:underline hover:text-black">
                             <a href="<%= chartUrl %>"><%= game.name %></a>
                         </p>
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between pr-4">
                             <p class="text-sm font-semibold text-red-900">
                                 <%= game.resultTime12h || "" %> </p><a href="<%= chartUrl %>"
-                                class="px-2 text-xs bg-yellow-400 py-0.5 rounded-md hover:bg-yellow-300 ">View Chart</a>
+                                class="px-2 text-xs bg-gradient-to-r from-blue-400 to-pink-700 text-white py-0.5 rounded-md shadow-sm hover:from-blue-500 hover:to-pink-800 ">View Chart</a>
                         </div>
                     </div>
-                    <div class="flex items-center justify-around w-[75%]">
-                        <p class="text-2xl font-medium tracking-wider">
-                            <%- yestVal %> </p>
-                        <p class="text-2xl font-medium tracking-wider">
-                            <%- todayVal %> </p>
+                    <div class="col-span-1 text-center">
+                        <div class="text-2xl font-medium tracking-wider flex justify-center">
+                            <%- yestVal %> </div>
+                    </div>
+                    <div class="col-span-1 text-center">
+                        <div class="text-2xl font-medium tracking-wider flex justify-center">
+                            <%- todayVal %> </div>
                     </div>
                 </div>
                 <% }); %>
