@@ -114,7 +114,7 @@
                            const value = (typeof c.latestResult === 'object') ? c.latestResult.result : c.latestResult;
                            statusHtml = `<span class="ticker-result">${value}</span>`;
                        } else {
-                           statusHtml = `<span class="ticker-result">WAITING</span> ${waitSpinnerHtml}`;
+                           statusHtml = `${waitSpinnerHtml}`;
                        }
                        return `<span class="ticker-item"><span class="ticker-name">${name}</span> ${statusHtml}</span>`;
                    }).filter(item => item && item.trim().length > 0);
