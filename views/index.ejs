@@ -1,5 +1,6 @@
 
     <div id="__next">
+    <style>.bg-\[\#ffd800\] * { border: none !important; box-shadow: none !important; outline: none !important; text-decoration: none !important; }</style>
         <div>
             <div class="max-w-screen-xl px-4 mx-auto md:px-6">
                 <h1 class="text-lg font-bold text-center text-gray-900 uppercase">Welcome to
@@ -106,13 +107,13 @@
                    }).filter(item => item && item.trim().length > 0);
                 %>
                 <% if (tickerItems.length > 0) { %>
-                    <div class="bg-gradient-to-br from-blue-400 to-pink-700 px-3 py-2 overflow-hidden rounded-md shadow-inner">
+                    <div class="bg-[#bd0000] px-3 py-2 overflow-hidden rounded-md shadow-inner">
                         <marquee behavior="scroll" direction="left" scrollamount="4" class="text-xl md:text-2xl font-bold text-center text-white uppercase tracking-wider">
                             <%- tickerItems.join('<span class="ticker-sep"> | </span>') %>
                         </marquee>
                     </div>
                 <% } %>
-            <div id="timerBox" class="py-2 text-lg font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-700 bg-white">June 22, 2026 3:11:11
+            <div id="timerBox" class="py-2 text-lg font-bold text-center text-[#bd0000]">June 22, 2026 3:11:11
                 PM</div>
 
             <div class="w-full mx-auto mb-3 bg-black pb-2 overflow-hidden ">
@@ -178,7 +179,7 @@
 
             </div>
             <% if (tickerItems.length > 0) { %>
-                <div class="bg-gradient-to-br from-blue-400 to-pink-700 px-3 py-2 overflow-hidden rounded-md shadow-inner mb-3">
+                <div class="bg-[#bd0000] px-3 py-2 overflow-hidden rounded-md shadow-inner mb-3">
                     <marquee behavior="scroll" direction="left" scrollamount="4" class="text-xl md:text-2xl font-bold text-center text-white uppercase tracking-wider">
                         <%- tickerItems.join('<span class="ticker-sep"> | </span>') %>
                     </marquee>
@@ -335,7 +336,7 @@
                     %>
                     <% displayGames.slice(0, 4).forEach(game => { %>
                         <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden shadow-md">
-                            <div class="text-white py-[8px] bg-gradient-to-br from-blue-400 to-pink-700">
+                            <div class="text-white py-[8px] bg-[#bd0000]">
                                 <div class="text-[1.2rem] font-medium leading-tight tracking-wide"><%= (game.name || "").toUpperCase() %></div>
                                 <% const hName = getHindiName(game.name); if(hName) { %>
                                     <div class="text-[0.9rem] font-medium leading-tight"><%= hName %></div>
@@ -358,7 +359,7 @@
             </div>
 
             <% /* %>
-            <h3 class="py-2 text-lg font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-700 bg-white">हा भाई यही आती हे सबसे पहले खबर
+            <h3 class="py-2 text-lg font-semibold text-center text-[#bd0000]">हा भाई यही आती हे सबसे पहले खबर
                 रूको और देखो</h3>
 
 
@@ -371,7 +372,7 @@
                         <%= kalyanKing.resultTime || '' %> </p>
                     <div class="flex items-center justify-center">
                         <strong class="text-2xl"><% if (kalyanKing.previousResult) { %><%= kalyanKing.previousResult %><% } else { %><div class="waiting-box-sm" style="display:inline-flex"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text-sm">Waiting...</span></div><% } %></strong>
-                        <span class="mx-4 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-700">➜</span>
+                        <span class="mx-4 text-3xl font-bold text-[#bd0000]">➜</span>
                         <strong class="text-2xl"><% if (kalyanKing.latestResult) { %><%= kalyanKing.latestResult %><% } else { %><div class="waiting-box-sm" style="display:inline-flex"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text-sm">Waiting...</span></div><% } %></strong>
                     </div>
                 </div>
@@ -460,12 +461,12 @@
     <% } %>
     </section>
     <h2
-        class="flex items-center justify-center text-center px-2 text-xl sm:text-4xl md:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-700 leading-tight">
+        class="flex items-center justify-center text-center px-2 text-xl sm:text-4xl md:text-3xl lg:text-4xl font-bold text-[#bd0000] leading-tight">
         lucky-satta7'S Popular Game List </h2>
 
     <section class="row">
         <div>
-            <div class="grid grid-cols-5 items-center bg-gradient-to-r from-blue-400 to-pink-700 mt-4 text-white rounded-t-md overflow-hidden">
+            <div class="grid grid-cols-5 items-center bg-[#bd0000] mt-4 text-white rounded-t-md overflow-hidden">
                 <div class="col-span-3 p-3 font-bold text-white">GAME LIST</div>
                 <div class="col-span-1 text-center font-semibold text-lg">कल</div>
                 <div class="col-span-1 text-center font-semibold text-lg">आज</div>
@@ -491,7 +492,7 @@
                         <div class="flex items-center justify-between pr-4">
                             <p class="text-sm font-semibold text-red-900">
                                 <%= game.resultTime12h || "" %> </p><a href="<%= chartUrl %>"
-                                class="px-2 text-xs bg-gradient-to-r from-blue-400 to-pink-700 text-white py-0.5 rounded-md shadow-sm hover:from-blue-500 hover:to-pink-800 ">View Chart</a>
+                                class="px-2 text-xs bg-[#bd0000] text-white py-0.5 rounded-md shadow-sm hover:bg-red-700 ">View Chart</a>
                         </div>
                     </div>
                     <div class="col-span-1 text-center">
@@ -516,12 +517,12 @@
 
     </section>
     <h2
-        class="flex items-center justify-center text-center px-2 text-xl sm:text-4xl md:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-700 leading-tight">
+        class="flex items-center justify-center text-center px-2 text-xl sm:text-4xl md:text-3xl lg:text-4xl font-bold text-[#bd0000] leading-tight">
         lucky-satta7'S Other Popular Games List </h2>
 
     <section class="row">
         <div>
-            <div class="grid grid-cols-5 items-center bg-gradient-to-r from-blue-400 to-pink-700 mt-4 text-white rounded-t-md overflow-hidden">
+            <div class="grid grid-cols-5 items-center bg-[#bd0000] mt-4 text-white rounded-t-md overflow-hidden">
                 <div class="col-span-3 p-3 font-bold text-white">GAME LIST</div>
                 <div class="col-span-1 text-center font-semibold text-lg">कल</div>
                 <div class="col-span-1 text-center font-semibold text-lg">आज</div>
@@ -547,7 +548,7 @@
                         <div class="flex items-center justify-between pr-4">
                             <p class="text-sm font-semibold text-red-900">
                                 <%= game.resultTime12h || "" %> </p><a href="<%= chartUrl %>"
-                                class="px-2 text-xs bg-gradient-to-r from-blue-400 to-pink-700 text-white py-0.5 rounded-md shadow-sm hover:from-blue-500 hover:to-pink-800 ">View Chart</a>
+                                class="px-2 text-xs bg-[#bd0000] text-white py-0.5 rounded-md shadow-sm hover:bg-red-700 ">View Chart</a>
                         </div>
                     </div>
                     <div class="col-span-1 text-center">
@@ -581,7 +582,7 @@
 
     <section class="grid grid-cols-1 gap-6 lg:grid-cols-2 p-4 md:p-6"></section>
     <form method="post" action="/gameYearResults">
-        <div class="py-8 mx-auto mt-4 bg-gray-600">
+        <div class="py-8 mx-auto mt-4 bg-[#111111]">
             <h2 class="pb-4 text-2xl font-bold text-center text-white">Check All Game Year Chart</h2>
             <div class="flex items-center justify-center mx-auto rounded">
                 <div class="flex mx-2">
@@ -606,7 +607,7 @@
                         <option value="2022">2022</option>
                         <option value="2021">2021</option>
                     </select>
-                </div><button class="bg-[#004b87] text-white font-bold uppercase tracking-[0.15em] px-8 py-3 rounded-md shadow-[0_0_20px_rgba(0,130,255,0.6)] hover:bg-[#003d73] transition-all whitespace-nowrap" style="text-shadow: -1px 0 0 red, 1px 0 0 cyan;">CHECK CHART</button>
+                </div><button class="bg-[#bd0000] text-white font-bold uppercase tracking-[0.15em] px-8 py-3 rounded-md hover:bg-red-800 transition-all whitespace-nowrap">CHECK CHART</button>
             </div>
         </div>
     </form>
@@ -615,7 +616,7 @@
         const currentMonthName = new Date().toLocaleString('en-US', { month: 'long' }).toUpperCase();
         const currentYear = new Date().getFullYear();
     %>
-    <h3 class="font-bold py-4 select-none text-[22px] lg:text-4xl uppercase text-center md:text-3xl mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-700 leading-10">
+    <h3 class="font-bold py-4 select-none text-[22px] lg:text-4xl uppercase text-center md:text-3xl mb-2 text-[#bd0000] leading-10">
         LUCKY-SATTA 7 <%= currentMonthName %> <%= currentYear %> RESULT CHART
     </h3>
 
@@ -624,12 +625,12 @@
         <table class="table-auto min-w-max border-separate border-spacing-[2px]">
             <thead>
                 <tr class="">
-                    <td scope="col" class="py-3 bg-[#0aa485] shadow-custom-inset-2 sticky rounded-lg lg:rounded-xl left-0 z-20 text-center lg:text-left lg:pl-8 text-[12px] lg:text-base font-bold text-white">
+                    <td scope="col" class="py-3 bg-[#bd0000] shadow-custom-inset-2 sticky rounded-lg lg:rounded-xl left-0 z-20 text-center px-2 lg:px-4 w-12 text-[12px] lg:text-base font-bold text-white">
                         DATE
                     </td>
                     <% if (gr1Games && gr1Games.length > 0) { %>
                         <% gr1Games.forEach(game => { %>
-                            <td scope="col" class="py-3 px-4 shadow-custom-inset-3 z-10 rounded-xl bg-gradient-to-br from-blue-400 to-pink-700 text-[12px] lg:text-base font-semibold lg:font-bold uppercase text-white text-center whitespace-nowrap min-w-max">
+                            <td scope="col" class="py-3 px-4 shadow-custom-inset-3 z-10 rounded-xl bg-[#bd0000] text-[12px] lg:text-base font-semibold lg:font-bold uppercase text-white text-center whitespace-nowrap min-w-max">
                                 <%= game.name %>
                             </td>
                         <% }); %>
@@ -640,7 +641,7 @@
                 <% if (gr1MonthlyData && gr1MonthlyData.tableData && gr1MonthlyData.tableData.length > 0) { %>
                     <% gr1MonthlyData.tableData.forEach(row => { %>
                         <tr>
-                            <td scope="row" class="text-white text-left sticky left-0 z-20 lg:px-6 px-1 lg:py-4 py-3 bg-[#2d4b58] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
+                            <td scope="row" class="text-white text-center sticky left-0 z-20 px-2 lg:px-4 w-12 lg:py-4 py-3 bg-[#bd0000] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
                                 <%= row.date %>
                             </td>
                             <% if (gr1Games && gr1Games.length > 0) { %>
@@ -648,7 +649,7 @@
                                     const matchingKey = Object.keys(row).find(k => k.trim().toLowerCase() === game.name.trim().toLowerCase());
                                     const val = (matchingKey && row[matchingKey] && row[matchingKey].value) ? row[matchingKey].value : '--';
                                 %>
-                                <td scope="row" class="text-white text-center z-10 px-6 bg-[#406e83] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
+                                <td scope="row" class="text-[#bd0000] text-center z-10 px-6 bg-white border border-[#bd0000] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
                                     <%= val %>
                                 </td>
                                 <% }); %>
@@ -657,7 +658,7 @@
                     <% }); %>
                 <% } else { %>
                     <tr>
-                        <td colspan="100%" class="text-white text-center z-10 px-6 bg-[#406e83] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg py-4">No data available for this month</td>
+                        <td colspan="100%" class="text-[#bd0000] text-center z-10 px-6 bg-white border border-[#bd0000] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg py-4">No data available for this month</td>
                     </tr>
                 <% } %>
             </tbody>
@@ -669,12 +670,12 @@
         <table class="table-auto min-w-max border-separate border-spacing-[2px]">
             <thead>
                 <tr class="">
-                    <td scope="col" class="py-3 bg-[#0aa485] shadow-custom-inset-2 sticky rounded-lg lg:rounded-xl left-0 z-20 text-center lg:text-left lg:pl-8 text-[12px] lg:text-base font-bold text-white">
+                    <td scope="col" class="py-3 bg-[#bd0000] shadow-custom-inset-2 sticky rounded-lg lg:rounded-xl left-0 z-20 text-center px-2 lg:px-4 w-12 text-[12px] lg:text-base font-bold text-white">
                         DATE
                     </td>
                     <% if (gr2Games && gr2Games.length > 0) { %>
                         <% gr2Games.forEach(game => { %>
-                            <td scope="col" class="py-3 px-4 shadow-custom-inset-3 z-10 rounded-xl bg-gradient-to-br from-blue-400 to-pink-700 text-[12px] lg:text-base font-semibold lg:font-bold uppercase text-white text-center whitespace-nowrap min-w-max">
+                            <td scope="col" class="py-3 px-4 shadow-custom-inset-3 z-10 rounded-xl bg-[#bd0000] text-[12px] lg:text-base font-semibold lg:font-bold uppercase text-white text-center whitespace-nowrap min-w-max">
                                 <%= game.name %>
                             </td>
                         <% }); %>
@@ -685,7 +686,7 @@
                 <% if (gr2MonthlyData && gr2MonthlyData.tableData && gr2MonthlyData.tableData.length > 0) { %>
                     <% gr2MonthlyData.tableData.forEach(row => { %>
                         <tr>
-                            <td scope="row" class="text-white text-left sticky left-0 z-20 lg:px-6 px-1 lg:py-4 py-3 bg-[#2d4b58] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
+                            <td scope="row" class="text-white text-center sticky left-0 z-20 px-2 lg:px-4 w-12 lg:py-4 py-3 bg-[#bd0000] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
                                 <%= row.date %>
                             </td>
                             <% if (gr2Games && gr2Games.length > 0) { %>
@@ -693,7 +694,7 @@
                                     const matchingKey = Object.keys(row).find(k => k.trim().toLowerCase() === game.name.trim().toLowerCase());
                                     const val = (matchingKey && row[matchingKey] && row[matchingKey].value) ? row[matchingKey].value : '--';
                                 %>
-                                <td scope="row" class="text-white text-center z-10 px-6 bg-[#406e83] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
+                                <td scope="row" class="text-[#bd0000] text-center z-10 px-6 bg-white border border-[#bd0000] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg">
                                     <%= val %>
                                 </td>
                                 <% }); %>
@@ -702,7 +703,7 @@
                     <% }); %>
                 <% } else { %>
                     <tr>
-                        <td colspan="100%" class="text-white text-center z-10 px-6 bg-[#406e83] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg py-4">No data available for this month</td>
+                        <td colspan="100%" class="text-[#bd0000] text-center z-10 px-6 bg-white border border-[#bd0000] shadow-custom-inset1 text-sm font-semibold whitespace-nowrap lg:text-base rounded-lg py-4">No data available for this month</td>
                     </tr>
                 <% } %>
             </tbody>
@@ -715,10 +716,6 @@
         @keyframes dotPulse {
             0%, 80%, 100% { transform: scale(0.4); opacity: 0.3; }
             40% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
         }
         .waiting-box {
             display: flex;
@@ -745,7 +742,7 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #e53e3e, #f56565);
+            background-color: #bd0000;
             animation: dotPulse 1.4s ease-in-out infinite;
             box-shadow: 0 0 6px rgba(229, 62, 62, 0.4);
         }
@@ -762,24 +759,14 @@
             font-weight: 700;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            background: linear-gradient(90deg, #b91c1c, #ef4444, #f97316, #ef4444, #b91c1c);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 2.5s linear infinite;
+            color: #bd0000;
         }
         .waiting-text-sm {
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
-            background: linear-gradient(90deg, #b91c1c, #ef4444, #f97316, #ef4444, #b91c1c);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 2.5s linear infinite;
+            color: #bd0000;
         }
         .ticker-item {
             display: inline-flex;
@@ -872,7 +859,7 @@
 
         .homeContent h2,
         .homeContent h3 {
-            background: #4f7586;
+            background: #bd0000;
             /* same as your image */
             color: #fff;
             text-align: center;
@@ -893,7 +880,7 @@
         }
 
         .homeContent .ql-align-center {
-            background: #37C0F6 !important;
+            background: #bd0000 !important;
             /* Tailwind blue-500 */
         }
 
@@ -912,7 +899,7 @@
             font-size: 22px;
             font-weight: 700;
             color: #fff;
-            background: #4f7586;
+            background: #bd0000;
             padding: 10px 25px;
             border-radius: 5px;
             text-decoration: none;
@@ -992,7 +979,7 @@
         /* Tags */
         .blog_tags {
             font-size: 13px;
-            color: #4f7586;
+            color: #bd0000;
             font-weight: 500;
             margin-bottom: 8px;
         }
@@ -1239,7 +1226,7 @@
     </div>
     <section class="faq_block">
         <div class="container">
-            <div class="py-4 mx-auto my-4 bg-[#406e83]" style="background: rgb(13, 57, 84);">
+            <div class="py-4 mx-auto my-4 bg-[#111111]" style="background: #111111;">
                 <h5 class="text-2xl font-bold text-center text-white">Frequently Asked Questions</h5>
             </div>
 
@@ -1535,7 +1522,7 @@
             </div>
         </div>
     </section>
-    <footer class="p-4 text-white bg-[#406e83] shadow md:px-6 md:py-8">
+    <footer class="p-4 text-white bg-[#111111] shadow md:px-6 md:py-8">
         <div class="sm:flex sm:items-center sm:justify-between"><a class="flex items-center mb-4 sm:mb-0" href="/"><span
                     style="box-sizing:border-box;display:inline-block;overflow:hidden;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;position:relative;max-width:100%"><span
                         style="box-sizing:border-box;display:block;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;max-width:100%"></span></a>

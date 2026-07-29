@@ -4,7 +4,7 @@
 <!-- ============================================================== -->
 <section class="grid grid-cols-1 gap-2 px-4 lg:grid-cols-2">
 <% allGames.forEach(game => { %>
-        <div class="relative overflow-hidden md:p-6 p-4 py-12 my-6 md:my-8 text-white rounded-2xl md:rounded-3xl transition-all duration-500 group bg-gradient-to-r from-fuchsia-500 to-rose-500 shadow-[inset_-5px_-5px_20px_#c026d3,inset_5px_5px_20px_#f43f5e] shadow-xl shadow-fuchsia-500/30 border border-pink-300/30 hover:shadow-2xl hover:shadow-rose-500/40">
+        <div class="relative overflow-hidden md:p-6 p-4 py-12 my-6 md:my-8 text-white rounded-2xl md:rounded-3xl transition-all duration-500 group bg-[#bd0000] shadow-xl border border-red-500/30 hover:shadow-2xl hover:shadow-red-900/40">
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-1000"></div>
             <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-1000"></div>
@@ -19,7 +19,7 @@
                     <h4 class="text-xl md:text-3xl font-bold tracking-wide text-center uppercase cursor-pointer transition-all duration-300 group-hover:scale-105">
                         <span class="relative inline-block">
                             <span class="absolute inset-0 bg-gradient-to-r from-white to-white/80 blur-xl opacity-70 group-hover:opacity-90 transition-opacity duration-300"></span>
-                            <span class="relative bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent"><%= game.name %></span>
+                            <span class="relative text-white"><%= game.name %></span>
                         </span>
                         <span class="block text-lg md:text-xl mt-2 font-semibold text-white/90">Yearly Chart <%= currentYear %></span>
                     </h4>
@@ -43,7 +43,7 @@
 <!-- ============================================================== -->
 <!-- Header Information  -->
 <!-- ============================================================== -->
-        <footer class="p-4 text-white bg-[#406e83] shadow md:px-6 md:py-8">
+        <footer class="p-4 text-white bg-[#111111] shadow md:px-6 md:py-8">
             <div class="sm:flex sm:items-center sm:justify-between"><a class="flex items-center mb-4 sm:mb-0" href="/"><span style="box-sizing:border-box;display:inline-block;overflow:hidden;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;position:relative;max-width:100%"><span style="box-sizing:border-box;display:block;width:initial;height:initial;background:none;opacity:1;border:0;margin:0;padding:0;max-width:100%"></span></a>
                 <ul class="flex flex-wrap items-center justify-end mb-4 text-sm text-gray-500 md:justify-start sm:mb-0">
                     <li class="flex items-center">
