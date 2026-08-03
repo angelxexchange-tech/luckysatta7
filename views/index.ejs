@@ -192,22 +192,40 @@
                     return (gr1Games || []).find(g => g.name && g.name.toLowerCase().trim() === name.toLowerCase().trim()) || null;
                 };
                 const waitingSpinner = '<div class="waiting-box"><div class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></div><span class="waiting-text">Waiting...</span></div>';
-                const getResult = (game) => {
-                    if (!game) return waitingSpinner;
-                    if (game.todayNumber && game.todayNumber.value) return game.todayNumber.value;
-                    return waitingSpinner;
-                };
-                const getPrevResult = (game) => {
-                    if (!game) return waitingSpinner;
+                const getResult = (item) => {
+                    if (!item || !item.game) return waitingSpinner;
+                    const game = item.game;
+                    if (item.isUpcomingCard) {
+                        if (game.todayNumber && game.todayNumber.value) return game.todayNumber.value;
+                        return waitingSpinner;
+                    }
+                    if (game.todayNumber && game.todayNumber.value) {
+                        return game.todayNumber.value;
+                    }
                     if (game.yesterdayNumber && game.yesterdayNumber.value) {
                         return game.yesterdayNumber.value;
                     }
+                    if (game.latestResult) {
+                        return typeof game.latestResult === 'object' ? game.latestResult.result : game.latestResult;
+                    }
                     return waitingSpinner;
                 };
-                const getTime = (game, defaultTime) => {
+                const getPrevResult = (item) => {
+                    if (!item || !item.game) return waitingSpinner;
+                    const game = item.game;
+                    if (item.isUpcomingCard || (game.todayNumber && game.todayNumber.value)) {
+                        if (game.yesterdayNumber && game.yesterdayNumber.value) {
+                            return game.yesterdayNumber.value;
+                        }
+                    }
+                    return waitingSpinner;
+                };
+                const getTime = (item, defaultTime) => {
+                    const game = item ? (item.game || item) : null;
                     return (game && game.resultTime12h) ? game.resultTime12h : defaultTime;
                 };
-                const getChartUrl = (game) => {
+                const getChartUrl = (item) => {
+                    const game = item ? (item.game || item) : null;
                     if (!game || !game.name) return "#";
                     return "/chart-2026/" + game.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') + "-satta-result";
                 };
@@ -284,57 +302,43 @@
                             return 24 * 60;
                         };
 
-                        const declaredGames = gr1Games.filter(g => g.todayNumber && g.todayNumber.value);
-                        const upcomingGames = gr1Games.filter(g => !(g.todayNumber && g.todayNumber.value));
-
-                        const sortByResultTime = (games) => {
-                            return games.slice().sort((a, b) => {
-                                let aMins = getMins(a.resultTime);
-                                let bMins = getMins(b.resultTime);
-                                return aMins - bMins;
-                            });
+                        const getUpcomingMins = (game) => {
+                            const mins = getMins(game.resultTime);
+                            let diff = mins - currentMins;
+                            if (diff <= 0) diff += 24 * 60;
+                            return diff;
                         };
 
-                        const getRelativePastMins = (game) => {
+                        const getPastMins = (game) => {
                             const mins = getMins(game.resultTime);
                             let diff = currentMins - mins;
                             if (diff < 0) diff += 24 * 60;
                             return diff;
                         };
 
-                        const sortedUpcoming = upcomingGames.slice().sort((a, b) => {
-                            let aMins = getMins(a.resultTime);
-                            let bMins = getMins(b.resultTime);
-                            if (aMins < currentMins - 60) aMins += 24 * 60;
-                            if (bMins < currentMins - 60) bMins += 24 * 60;
-                            return aMins - bMins;
-                        });
+                        // 1. Next upcoming game (1 pending card)
+                        const sortedByUpcoming = gr1Games.slice().sort((a, b) => getUpcomingMins(a) - getUpcomingMins(b));
+                        const nextUpcomingGame = sortedByUpcoming.length > 0 ? sortedByUpcoming[0] : null;
 
-                        const sortedPast = declaredGames.slice().sort((a, b) => {
-                            return getRelativePastMins(a) - getRelativePastMins(b);
-                        });
+                        // 2. 3 most recently declared / past games (3 result cards)
+                        const remainingGames = gr1Games.filter(g => g !== nextUpcomingGame);
+                        const sortedByPast = remainingGames.slice().sort((a, b) => getPastMins(a) - getPastMins(b));
 
                         let displayGames = [];
-                        if (sortedUpcoming.length > 0) {
-                            displayGames.push(sortedUpcoming[0]);
+                        if (nextUpcomingGame) {
+                            displayGames.push({ game: nextUpcomingGame, isUpcomingCard: true });
                         }
+                        sortedByPast.slice(0, 3).forEach(g => {
+                            displayGames.push({ game: g, isUpcomingCard: false });
+                        });
 
-                        let pastIndex = 0;
-                        while (displayGames.length < 4 && pastIndex < sortedPast.length) {
-                            displayGames.push(sortedPast[pastIndex]);
-                            pastIndex += 1;
-                        }
-
-                        if (displayGames.length < 4) {
-                            const fillGames = gr1Games.filter(g => !displayGames.includes(g));
-                            const fillPast = fillGames.filter(g => g.todayNumber && g.todayNumber.value);
-                            const fillSorted = sortByResultTime(fillPast.length > 0 ? fillPast : fillGames);
-                            while (displayGames.length < 4 && fillSorted.length > 0) {
-                                displayGames.push(fillSorted.shift());
-                            }
+                        while (displayGames.length < 4 && gr1Games.length > displayGames.length) {
+                            const unused = gr1Games.find(g => !displayGames.some(d => d.game === g));
+                            if (unused) displayGames.push({ game: unused, isUpcomingCard: false });
+                            else break;
                         }
                     %>
-                    <% displayGames.slice(0, 4).forEach(game => { %>
+                    <% displayGames.slice(0, 4).forEach(item => { const game = item.game; %>
                         <div class="bg-white flex flex-col text-center rounded-[3px] overflow-hidden shadow-md">
                             <div class="text-white py-[8px] bg-[#bd0000]">
                                 <div class="text-[1.2rem] font-medium leading-tight tracking-wide"><%= (game.name || "").toUpperCase() %></div>
@@ -343,12 +347,12 @@
                                 <% } %>
                             </div>
                             <div class="pt-[22px] pb-[16px] flex-grow bg-white">
-                                <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%- getResult(game) %></div>
-                                <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(game, "Time TBA") %></div>
+                                <div class="text-[3.2rem] font-normal leading-none mb-[12px]" style="color: #3b4255;"><%- getResult(item) %></div>
+                                <div class="text-[14px] font-medium" style="color: #28a745;"><%= getTime(item, "Time TBA") %></div>
                             </div>
                             <div class="pb-[14px] bg-white flex flex-col gap-[3px]" style="color: #337ab7;">
-                                <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%- getPrevResult(game) %></a>
-                                <a href="<%= getChartUrl(game) %>" class="hover:underline text-[13px]">Record Chart</a>
+                                <a href="<%= getChartUrl(item) %>" class="hover:underline text-[13px]">पिछला रिजल्ट <%- getPrevResult(item) %></a>
+                                <a href="<%= getChartUrl(item) %>" class="hover:underline text-[13px]">Record Chart</a>
                                 <a href="/mostfrequent?game=<%= encodeURIComponent(game.name) %>" class="hover:underline text-[12px] mt-[2px]" style="color: #4a90e2;">Extended chart on SattaFree &rarr;</a>
                             </div>
                         </div>
