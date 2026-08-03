@@ -211,12 +211,10 @@
                     return waitingSpinner;
                 };
                 const getPrevResult = (item) => {
-                    if (!item || !item.game) return waitingSpinner;
-                    const game = item.game;
-                    if (item.isUpcomingCard || (game.todayNumber && game.todayNumber.value)) {
-                        if (game.yesterdayNumber && game.yesterdayNumber.value) {
-                            return game.yesterdayNumber.value;
-                        }
+                    const game = item ? (item.game || item) : null;
+                    if (!game) return waitingSpinner;
+                    if (game.yesterdayNumber && game.yesterdayNumber.value) {
+                        return game.yesterdayNumber.value;
                     }
                     return waitingSpinner;
                 };
