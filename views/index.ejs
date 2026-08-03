@@ -121,7 +121,7 @@
 
                    // Past games sorted by how recently their result time occurred
                    const tickerRemaining = tickerCards.filter(g => g !== tickerNextUpcoming);
-                   const tickerSortedByPast = tickerRemaining.slice().sort((a, b) => getTickerPastMins(a) - getPastMins(b));
+                   const tickerSortedByPast = tickerRemaining.slice().sort((a, b) => getTickerPastMins(a) - getTickerPastMins(b));
 
                    let tickerSelected = [];
                    tickerSortedByPast.forEach(g => tickerSelected.push({ game: g, isUpcoming: false }));
