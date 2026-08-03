@@ -15,53 +15,35 @@
     </div>
 
     <div>&nbsp;</div>
-    <div class="overflow-auto mx-auto max-w-[2000px]">
-        <table class="w-full table-fixed">
-            <tbody>
-                <tr class="text-white bg-amber-900">
-                    <th class="w-12 px-2 py-3 bg-[#bd0000] text-white border border-[#bd0000]">
+    <div class="overflow-x-auto mx-auto max-w-[2000px] shadow-md">
+        <table class="w-full min-w-[650px] border-collapse">
+            <thead>
+                <tr class="text-white bg-[#bd0000]">
+                    <th class="w-12 px-2 py-2.5 bg-[#bd0000] text-white text-center border border-[#bd0000] text-xs md:text-sm font-bold whitespace-nowrap">
                         <%= currentYear %>
                     </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        January </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        February </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        March </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        April </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        May </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        June </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        July </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        August </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        September </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        October </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        November </th>
-                    <th class="px-3 fs-6 bg-[#bd0000] text-white border border-[#bd0000]">
-                        December </th>
+                    <% const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']; %>
+                    <% months.forEach(m => { %>
+                        <th class="px-2 py-2.5 bg-[#bd0000] text-white text-center border border-[#bd0000] text-xs md:text-sm font-bold whitespace-nowrap">
+                            <%= m %>
+                        </th>
+                    <% }); %>
                 </tr>
-
+            </thead>
+            <tbody>
                 <% const monthNums={ JAN: '01' , FEB: '02' , MAR: '03' , APR: '04' , MAY: '05' , JUN: '06' , JUL: '07' ,
                     AUG: '08' , SEP: '09' , OCT: '10' , NOV: '11' , DEC: '12' }; for (let i=0; i < 31; i++) { %>
                     <tr class="text-center bg-gray-100">
-                        <th class="w-12 py-1 bg-[#bd0000] text-white text-center border border-[#bd0000]">
+                        <th class="w-12 py-1 bg-[#bd0000] text-white text-center border border-[#bd0000] text-xs md:text-sm font-bold">
                             <%= String(i + 1).padStart(2, '0' ) %>
                         </th>
-                        <% ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'].forEach(m=> { %>
-                            <th class="w-full py-1 text-center bg-white text-[#bd0000] border border-[#bd0000] font-bold" title="<%= String(i + 1).padStart(2, '0') %>-<%= monthNums[m] %>-<%= currentYear %>">
+                        <% months.forEach(m=> { %>
+                            <td class="py-1 px-1 text-center bg-white text-[#bd0000] border border-[#bd0000] font-bold text-xs md:text-sm whitespace-nowrap" title="<%= String(i + 1).padStart(2, '0') %>-<%= monthNums[m] %>-<%= currentYear %>">
                                 <%= (chartData && chartData[m] && chartData[m][i]) ? chartData[m][i] : '-' %>
-                            </th>
-                            <% }) %>
+                            </td>
+                        <% }) %>
                     </tr>
-                    <% } %>
-
+                <% } %>
             </tbody>
         </table>
     </div>
