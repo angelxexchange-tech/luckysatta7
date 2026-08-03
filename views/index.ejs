@@ -68,40 +68,87 @@
                 %>
                 <% 
                    const tickerCards = (gr1Games && gr1Games.length > 0) ? gr1Games : ((validCards && validCards.length > 0) ? validCards : (upcomingCards || []));
-                   const parseMins = (timeStr) => {
+
+                   const getTickerMins = (timeStr) => {
                        if (!timeStr) return 24 * 60;
-                       const normalized = timeStr.toString().trim().toUpperCase();
-                       const ampmMatch = normalized.match(/(AM|PM)$/);
+                       const value = timeStr.toString().trim();
+                       const ampmMatch = value.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
                        if (ampmMatch) {
-                           const timePart = normalized.replace(/(AM|PM)$/, '').trim();
-                           const parts = timePart.split(':').map(Number);
-                           let hours = parts[0] % 12;
-                           if (ampmMatch[1] === 'PM') hours += 12;
-                           return hours * 60 + (parts[1] || 0);
+                           let hours = Number(ampmMatch[1]);
+                           const minutes = Number(ampmMatch[2]);
+                           const ampm = ampmMatch[3].toUpperCase();
+                           if (hours === 12) {
+                               hours = (ampm === 'AM') ? 0 : 12;
+                           } else if (ampm === 'PM') {
+                               hours += 12;
+                           }
+                           return hours * 60 + minutes;
                        }
-                       const parts = normalized.split(':').map(Number);
-                       if (parts.length >= 2) return (parts[0] || 0) * 60 + (parts[1] || 0);
+                       const [h, m] = value.split(':').map(Number);
+                       if (Number.isFinite(h) && Number.isFinite(m)) {
+                           return h * 60 + m;
+                       }
                        return 24 * 60;
                    };
-                   const isDone = (c) => Boolean((c.todayNumber && c.todayNumber.value) || c.latestResult);
-                   const doneItems = tickerCards.slice().filter(isDone).sort((a, b) => {
-                       const aTime = a.todayNumber && a.todayNumber.declaredAt ? new Date(a.todayNumber.declaredAt).getTime() : parseMins(a.resultTime);
-                       const bTime = b.todayNumber && b.todayNumber.declaredAt ? new Date(b.todayNumber.declaredAt).getTime() : parseMins(b.resultTime);
-                       return bTime - aTime;
-                   });
-                   const upcomingItems = tickerCards.slice().filter(c => !isDone(c)).sort((a, b) => parseMins(a.resultTime) - parseMins(b.resultTime));
-                   const selectedItems = doneItems.slice(0, 4).concat(upcomingItems.slice(0, 2));
+
+                   const getTickerUpcomingMins = (game) => {
+                       const mins = getTickerMins(game.resultTime);
+                       let diff = mins - currentMins;
+                       if (diff <= 0) diff += 24 * 60;
+                       return diff;
+                   };
+
+                   const getTickerPastMins = (game) => {
+                       const mins = getTickerMins(game.resultTime);
+                       let diff = currentMins - mins;
+                       if (diff < 0) diff += 24 * 60;
+                       return diff;
+                   };
+
+                   const getTickerResultVal = (game) => {
+                       if (!game) return null;
+                       if (game.todayNumber && game.todayNumber.value) return game.todayNumber.value;
+                       if (game.yesterdayNumber && game.yesterdayNumber.value) return game.yesterdayNumber.value;
+                       if (game.latestResult) {
+                           return typeof game.latestResult === 'object' ? game.latestResult.result : game.latestResult;
+                       }
+                       return null;
+                   };
+
+                   // Next upcoming game (pending)
+                   const tickerSortedByUpcoming = tickerCards.slice().sort((a, b) => getTickerUpcomingMins(a) - getTickerUpcomingMins(b));
+                   const tickerNextUpcoming = tickerSortedByUpcoming.length > 0 ? tickerSortedByUpcoming[0] : null;
+
+                   // Past games sorted by how recently their result time occurred
+                   const tickerRemaining = tickerCards.filter(g => g !== tickerNextUpcoming);
+                   const tickerSortedByPast = tickerRemaining.slice().sort((a, b) => getTickerPastMins(a) - getPastMins(b));
+
+                   let tickerSelected = [];
+                   tickerSortedByPast.forEach(g => tickerSelected.push({ game: g, isUpcoming: false }));
+                   if (tickerNextUpcoming) {
+                       tickerSelected.push({ game: tickerNextUpcoming, isUpcoming: true });
+                   }
+
                    const waitSpinnerHtml = '<span class="ticker-waiting"><span class="waiting-dots"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></span><span class="waiting-text-sm">WAITING</span></span>';
-                   const tickerItems = selectedItems.map(c => {
+
+                   const tickerItems = tickerSelected.map(item => {
+                       const c = item.game;
                        const name = (c.name || "").toUpperCase();
+                       const val = getTickerResultVal(c);
                        let statusHtml = '';
-                       if (c.todayNumber && c.todayNumber.value) {
-                           statusHtml = `<span class="ticker-result">${c.todayNumber.value}</span>`;
-                       } else if (c.latestResult) {
-                           const value = (typeof c.latestResult === 'object') ? c.latestResult.result : c.latestResult;
-                           statusHtml = `<span class="ticker-result">${value}</span>`;
+
+                       if (item.isUpcoming) {
+                           if (c.todayNumber && c.todayNumber.value) {
+                               statusHtml = `<span class="ticker-result" style="color: #ffffff;"><span style="color: #ff0000; font-weight: bold; margin: 0 4px;">»</span>${c.todayNumber.value}<span style="color: #ff0000; font-weight: bold; margin: 0 4px;">»</span></span>`;
+                           } else {
+                               statusHtml = waitSpinnerHtml;
+                           }
                        } else {
-                           statusHtml = `${waitSpinnerHtml}`;
+                           if (val) {
+                               statusHtml = `<span class="ticker-result" style="color: #ffffff;"><span style="color: #ff0000; font-weight: bold; margin: 0 4px;">»</span>${val}<span style="color: #ff0000; font-weight: bold; margin: 0 4px;">»</span></span>`;
+                           } else {
+                               statusHtml = waitSpinnerHtml;
+                           }
                        }
                        return `<span class="ticker-item"><span class="ticker-name">${name}</span> ${statusHtml}</span>`;
                    }).filter(item => item && item.trim().length > 0);
