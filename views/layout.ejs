@@ -3,7 +3,7 @@
 
 <head>
     <meta charSet="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <% if (locals.seo && locals.seo.metaDescription) { %>
     <meta name="description" content="<%= locals.seo.metaDescription %>" />
@@ -99,7 +99,7 @@
     
 </head>
 
-<body class="max-w-7xl mx-auto font-Roboto relative">
+<body class="max-w-7xl mx-auto font-Roboto relative overflow-x-hidden">
     <div id="__next">
         <%- include('./partials/header') %>
 
